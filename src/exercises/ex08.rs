@@ -1,0 +1,32 @@
+use std::ops::Add;
+use crate::matrix::Matrix;
+
+impl <const M: usize, K: Add<Output = K> + Default + Copy> Matrix<M, M, K> {
+    pub fn trace(&self) -> K {
+        let mut trace = K::default();
+        for i in 0..M {
+            trace = trace + self[(i, i)];
+        }
+        trace
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_0_trace_unit() {
+        dbg!(Matrix::from([[1., 0.], [0., 1.]]).trace());
+    }
+
+    #[test]
+    fn test_1_trace() {
+        dbg!(Matrix::from([[2., -5., 0.], [4., 3., 7.], [-2., 3., 4.]]).trace());
+    }
+
+    #[test]
+    fn test_2_neg_trace() {
+        dbg!(Matrix::from([[-2., -8., 4.], [1., -23., 4.], [0., 6., 4.]]).trace());
+    }
+}

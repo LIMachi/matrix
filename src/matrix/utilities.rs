@@ -15,13 +15,34 @@ impl <const C: usize, const R: usize, K> Matrix<C, R, K> {
     }
 
     pub fn column(&self, index: usize) -> &Vector<R, K> {
-        assert!(index < C, "Invalid column index {index} for matrice of size {R} (rows) * {C} (columns)");
+        assert!(index < C, "Invalid column index {index} for matrice of size {C} (columns) * {R} (rows)");
         &self.0[index]
     }
 
     pub fn column_mut(&mut self, index: usize) -> &mut Vector<R, K> {
-        assert!(index < C, "Invalid column index {index} for matrice of size {R} (rows) * {C} (columns)");
+        assert!(index < C, "Invalid column index {index} for matrice of size {C} (columns) * {R} (rows)");
         &mut self.0[index]
+    }
+}
+
+impl <const M: usize, K: Default + Copy> Matrix<M, M, K> {
+    pub fn unit(trace: K) -> Self {
+        let mut out = Self::default();
+        for i in 0..M {
+            out[(i, i)] = trace;
+        }
+        out
+    }
+}
+
+impl <const C: usize, const R: usize, K: Copy + Default> Matrix<C, R, K> {
+    pub fn row(&self, index: usize) -> Vector<C, K> {
+        assert!(index < R, "Invalid row index {index} for matrice of size {C} (columns) * {R} (rows)");
+        let mut t = Vec::with_capacity(C);
+        for i in 0..C {
+            t.push(self.0[i][index]);
+        }
+        Vector::<C, K>::from(t)
     }
 }
 
@@ -62,6 +83,13 @@ mod tests {
     #[test]
     fn test_display() {
         let mat = Matrix::<2, 4, f32>::default();
+        dbg!(&mat);
+        println!("{}", mat);
+    }
+
+    #[test]
+    fn test_unit() {
+        let mat = Matrix::<3, 3, f32>::unit(1.);
         dbg!(&mat);
         println!("{}", mat);
     }

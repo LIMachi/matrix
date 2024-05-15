@@ -12,7 +12,7 @@ pub trait Sqrf32 {
     fn sqrf32(self) -> f32;
 }
 
-/// note: since most exercises do not allow sqrt, here is a brute force version that should be stable enough for demonstration purpose using the babylonian method
+///note: since most exercises do not allow sqrt, here is a brute force version that should be stable enough for demonstration purpose using the babylonian method
 ///https://blogs.sas.com/content/iml/2016/05/16/babylonian-square-roots.html
 pub fn babylonian_sqrt(val: f32) -> f32 {
     if val <= 0. {

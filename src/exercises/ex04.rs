@@ -38,19 +38,19 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_null_vector() {
+    fn test_0_null_vector() {
         let u = Vector::<3, f32>::from([0., 0., 0.]);
         println!("{}, {}, {}", u.norm_1(), u.norm(), u.norm_inf());
     }
 
     #[test]
-    fn test_vector() {
+    fn test_1_vector() {
         let u = Vector::<3, f32>::from([1., 2., 3.]);
         println!("{}, {}, {}", u.norm_1(), u.norm(), u.norm_inf());
     }
 
     #[test]
-    fn test_negative_vector() {
+    fn test_2_negative_vector() {
         let u = Vector::<2, f32>::from([-1., -2.]);
         println!("{}, {}, {}", u.norm_1(), u.norm(), u.norm_inf());
     }

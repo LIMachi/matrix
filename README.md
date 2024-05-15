@@ -6,6 +6,8 @@ References used:
 - Infinite/Supremum norm: https://en.wikipedia.org/wiki/Uniform_norm
 - Abs of complex number: https://www.varsitytutors.com/hotmath/hotmath_help/topics/absolute-value-complex-number
 - Approximation of square root using the babylonian method: https://blogs.sas.com/content/iml/2016/05/16/babylonian-square-roots.html
+- Cosine of 2 vectors: https://www.geeksforgeeks.org/cosine-similarity/
+- Multiplication of matrices/vectors: https://mathinsight.org/matrix_vector_multiplication
 
 Rust version: `rustc 1.77.2`
 
@@ -17,11 +19,11 @@ Completion:
 - [x] ex02 lerp
 - [x] ex03 dot
 - [x] ex04 norm
-- [ ] ex05 cos
-- [ ] ex06 cross
-- [ ] ex07 linear map, mat mult
-- [ ] ex08 trace
-- [ ] ex09 transpose
+- [x] ex05 cos
+- [x] ex06 cross
+- [x] ex07 linear map, mat mult
+- [x] ex08 trace
+- [x] ex09 transpose
 - [ ] ex10 row echelon form
 - [ ] ex11 determinant
 - [ ] ex12 inverse

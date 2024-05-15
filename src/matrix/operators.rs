@@ -110,19 +110,6 @@ impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<Vector<R, K
     }
 }
 
-impl <const C: usize, const R: usize, K: Mul<Output = K> + Copy> Mul for Matrix<C, R, K> {
-    type Output = Self;
-
-    fn mul(mut self, rhs: Self) -> Self::Output {
-        for r in 0..R {
-            for c in 0..C {
-                self[(c, r)] = self[(c, r)] * rhs[(c, r)];
-            }
-        }
-        self
-    }
-}
-
 impl <const C: usize, const R: usize, K: Mul<Output = K> + Copy> Mul<K> for Matrix<C, R, K> {
     type Output = Self;
 
@@ -130,30 +117,6 @@ impl <const C: usize, const R: usize, K: Mul<Output = K> + Copy> Mul<K> for Matr
         for r in 0..R {
             for c in 0..C {
                 self[(c, r)] = self[(c, r)] * rhs;
-            }
-        }
-        self
-    }
-}
-
-impl <const C: usize, const R: usize, K: Mul<Output = K> + Copy> Mul<Vector<R, K>> for Matrix<C, R, K> {
-    type Output = Self;
-
-    fn mul(mut self, rhs: Vector<R, K>) -> Self::Output {
-        for c in 0..C {
-            self[c] = self[c] * rhs;
-        }
-        self
-    }
-}
-
-impl <const C: usize, const R: usize, K: Div<Output = K> + Copy> Div for Matrix<C, R, K> {
-    type Output = Self;
-
-    fn div(mut self, rhs: Self) -> Self::Output {
-        for r in 0..R {
-            for c in 0..C {
-                self[(c, r)] = self[(c, r)] / rhs[(c, r)];
             }
         }
         self
@@ -168,17 +131,6 @@ impl <const C: usize, const R: usize, K: Div<Output = K> + Copy> Div<K> for Matr
             for c in 0..C {
                 self[(c, r)] = self[(c, r)] / rhs;
             }
-        }
-        self
-    }
-}
-
-impl <const C: usize, const R: usize, K: Div<Output = K> + Copy> Div<Vector<R, K>> for Matrix<C, R, K> {
-    type Output = Self;
-
-    fn div(mut self, rhs: Vector<R, K>) -> Self::Output {
-        for c in 0..C {
-            self[c] = self[c] / rhs;
         }
         self
     }
@@ -210,15 +162,11 @@ mod tests {
 
     #[test]
     fn test_operator_mul() {
-        dbg!(Matrix::from([[1., 2.], [3., 4.]]) * Matrix::from([[5., 6.], [7., 8.]]));
         dbg!(Matrix::from([[1., 2.], [3., 4.]]) * 2.);
-        dbg!(Matrix::from([[1., 2.], [3., 4.]]) * Vector::from([5., 6.]));
     }
 
     #[test]
     fn test_operator_div() {
-        dbg!(Matrix::from([[1., 2.], [3., 4.]]) / Matrix::from([[5., 6.], [7., 8.]]));
         dbg!(Matrix::from([[1., 2.], [3., 4.]]) / 2.);
-        dbg!(Matrix::from([[1., 2.], [3., 4.]]) / Vector::from([5., 6.]));
     }
 }
