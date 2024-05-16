@@ -3,17 +3,17 @@ use crate::matrix::Matrix;
 use crate::vector::Vector;
 
 impl <const C: usize, const R: usize, K> Index<usize> for Matrix<C, R, K> {
-    type Output = Vector<R, K>;
+    type Output = Vector<C, K>;
 
     fn index(&self, index: usize) -> &Self::Output {
-        assert!(index < C, "Invalid column index {index} for matrix of size {C} (columns) * {R} (rows)");
+        assert!(index < R, "Invalid row index {index} for matrix of size {C} (columns) * {R} (rows)");
         &self.0[index]
     }
 }
 
 impl <const C: usize, const R: usize, K> IndexMut<usize> for Matrix<C, R, K> {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
-        assert!(index < C, "Invalid column index {index} for matrix of size {C} (columns) * {R} (rows)");
+        assert!(index < R, "Invalid column index {index} for matrix of size {C} (columns) * {R} (rows)");
         &mut self.0[index]
     }
 }
@@ -24,7 +24,7 @@ impl <const C: usize, const R: usize, K> Index<(usize, usize)> for Matrix<C, R, 
     fn index(&self, index: (usize, usize)) -> &Self::Output {
         assert!(index.0 < C, "Invalid column index {} for matrix of size {C} (columns) * {R} (rows)", index.0);
         assert!(index.1 < R, "Invalid row index {} for matrix of size {C} (columns) * {R} (rows)", index.1);
-        &self.0[index.0][index.1]
+        &self.0[index.1][index.0]
     }
 }
 
@@ -32,7 +32,7 @@ impl <const C: usize, const R: usize, K> IndexMut<(usize, usize)> for Matrix<C, 
     fn index_mut(&mut self, index: (usize, usize)) -> &mut Self::Output {
         assert!(index.0 < C, "Invalid column index {} for matrix of size {C} (columns) * {R} (rows)", index.0);
         assert!(index.1 < R, "Invalid row index {} for matrix of size {C} (columns) * {R} (rows)", index.1);
-        &mut self.0[index.0][index.1]
+        &mut self.0[index.1][index.0]
     }
 }
 
@@ -62,12 +62,12 @@ impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<K> for Matr
     }
 }
 
-impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<Vector<R, K>> for Matrix<C, R, K> {
+impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<Vector<C, K>> for Matrix<C, R, K> {
     type Output = Self;
 
-    fn add(mut self, rhs: Vector<R, K>) -> Self::Output {
-        for c in 0..C {
-            self[c] = self[c] + rhs;
+    fn add(mut self, rhs: Vector<C, K>) -> Self::Output {
+        for r in 0..R {
+            self[r] = self[r] + rhs;
         }
         self
     }
@@ -99,12 +99,12 @@ impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<K> for Matr
     }
 }
 
-impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<Vector<R, K>> for Matrix<C, R, K> {
+impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<Vector<C, K>> for Matrix<C, R, K> {
     type Output = Self;
 
-    fn sub(mut self, rhs: Vector<R, K>) -> Self::Output {
-        for c in 0..C {
-            self[c] = self[c] - rhs;
+    fn sub(mut self, rhs: Vector<C, K>) -> Self::Output {
+        for r in 0..R {
+            self[r] = self[r] - rhs;
         }
         self
     }
@@ -133,6 +133,19 @@ impl <const C: usize, const R: usize, K: Div<Output = K> + Copy> Div<K> for Matr
             }
         }
         self
+    }
+}
+
+impl <const C: usize, const R: usize, K: PartialEq> PartialEq for Matrix<C, R, K> {
+    fn eq(&self, other: &Self) -> bool {
+        for r in 0..R {
+            for c in 0..C {
+                if self[(c, r)] != other[(c, r)] {
+                    return false;
+                }
+            }
+        }
+        true
     }
 }
 

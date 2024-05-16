@@ -132,6 +132,17 @@ impl <const S: usize, K: Div<Output = K> + Copy> Div<K> for Vector<S, K> {
     }
 }
 
+impl <const S: usize, K: PartialEq> PartialEq for Vector<S, K> {
+    fn eq(&self, other: &Self) -> bool {
+        for i in 0..S {
+            if self.0[i] != other.0[i] {
+                return false;
+            }
+        }
+        true
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

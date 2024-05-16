@@ -41,7 +41,7 @@ impl <const S: usize, K: Mul<Output = K> + Copy> Ex00scl<K> for Vector<S, K> {
 impl <const R: usize, const C: usize, K: Add<Output = K> + Copy> Ex00add for Matrix<R, C, K> {
     fn add(&mut self, other: &Self) {
         for i in 0..C {
-            self.column_mut(i).add(other.column(i));
+            self.row_mut(i).add(other.row(i));
         }
     }
 }
@@ -49,7 +49,7 @@ impl <const R: usize, const C: usize, K: Add<Output = K> + Copy> Ex00add for Mat
 impl <const R: usize, const C: usize, K: Sub<Output = K> + Copy> Ex00sub for Matrix<R, C, K> {
     fn sub(&mut self, other: &Self) {
         for i in 0..C {
-            self.column_mut(i).sub(other.column(i));
+            self.row_mut(i).sub(other.row(i));
         }
     }
 }
@@ -57,7 +57,7 @@ impl <const R: usize, const C: usize, K: Sub<Output = K> + Copy> Ex00sub for Mat
 impl <const R: usize, const C: usize, K: Mul<Output = K> + Copy> Ex00scl<K> for Matrix<R, C, K> {
     fn scl(&mut self, scalar: K) {
         for i in 0..C {
-            self.column_mut(i).scl(scalar);
+            self.row_mut(i).scl(scalar);
         }
     }
 }
@@ -70,50 +70,59 @@ mod tests {
 
     #[test]
     fn test_0_add_vectors() {
-        let mut u = Vector::<2, f32>::from([2., 3.]);
-        let v = Vector::<2, f32>::from([5., 7.]);
-        u.add(&v);
-        println!("{}", u);
+        assert_eq!(dbg!({
+            let mut u = Vector::from([2., 3.]);
+            let v = Vector::from([5., 7.]);
+            u.add(&v);
+            u
+        }), Vector::from([7., 10.]));
     }
 
     #[test]
     fn test_1_sub_vectors() {
-        let mut u = Vector::<2, f32>::from([2., 3.]);
-        let v = Vector::<2, f32>::from([5., 7.]);
-        u.sub(&v);
-        println!("{}", u);
+        assert_eq!(dbg!({
+            let mut u = Vector::from([2., 3.]);
+            let v = Vector::from([5., 7.]);
+            u.sub(&v);
+            u
+        }), Vector::from([-3., -4.]));
     }
 
     #[test]
     fn test_2_scl_vector() {
-        let mut u = Vector::<2, f32>::from([2., 3.]);
-        u.scl(2.);
-        println!("{}", u);
+        assert_eq!(dbg!({
+            let mut u = Vector::from([2., 3.]);
+            u.scl(2.);
+            u
+        }), Vector::from([4., 6.]));
     }
 
     #[test]
     fn test_3_add_matrices() {
-        let mut u = Matrix::<2, 2, f32>::from([[1., 2.], [3., 4.]]);
-        let v = Matrix::<2, 2, f32>::from([[7., 4.], [-2., 2.]]);
-        u.add(&v);
-        dbg!(&u);
-        println!("{}", u);
+        assert_eq!(dbg!({
+            let mut u = Matrix::from([[1., 2.], [3., 4.]]);
+            let v = Matrix::from([[7., 4.], [-2., 2.]]);
+            u.add(&v);
+            u
+        }), Matrix::from([[8., 6.], [1., 6.]]));
     }
 
     #[test]
     fn test_4_sub_matrices() {
-        let mut u = Matrix::<2, 2, f32>::from([[1., 2.], [3., 4.]]);
-        let v = Matrix::<2, 2, f32>::from([[7., 4.], [-2., 2.]]);
-        u.sub(&v);
-        dbg!(&u);
-        println!("{}", u);
+        assert_eq!(dbg!({
+            let mut u = Matrix::from([[1., 2.], [3., 4.]]);
+            let v = Matrix::from([[7., 4.], [-2., 2.]]);
+            u.sub(&v);
+            u
+        }), Matrix::from([[-6., -2.], [5., 2.]]));
     }
 
     #[test]
     fn test_5_scl_matrix() {
-        let mut u = Matrix::<2, 2, f32>::from([[1., 2.], [3., 4.]]);
-        u.scl(2.);
-        dbg!(&u);
-        println!("{}", u);
+        assert_eq!(dbg!({
+            let mut u = Matrix::from([[1., 2.], [3., 4.]]);
+            u.scl(2.);
+            u
+        }), Matrix::from([[2., 4.], [6., 8.]]));
     }
 }

@@ -6,21 +6,21 @@ impl <const C: usize, const R: usize, K> Matrix<C, R, K> {
 
     pub fn shape() -> (usize, usize) { (C, R) }
 
-    pub fn columns(&self) -> &Vector<C, Vector<R, K>> {
+    pub fn rows(&self) -> &Vector<R, Vector<C, K>> {
         &self.0
     }
 
-    pub fn columns_mut(&mut self) -> &mut Vector<C, Vector<R, K>> {
+    pub fn rows_mut(&mut self) -> &mut Vector<R, Vector<C, K>> {
         &mut self.0
     }
 
-    pub fn column(&self, index: usize) -> &Vector<R, K> {
-        assert!(index < C, "Invalid column index {index} for matrice of size {C} (columns) * {R} (rows)");
+    pub fn row(&self, index: usize) -> &Vector<C, K> {
+        assert!(index < R, "Invalid row index {index} for matrice of size {C} (columns) * {R} (rows)");
         &self.0[index]
     }
 
-    pub fn column_mut(&mut self, index: usize) -> &mut Vector<R, K> {
-        assert!(index < C, "Invalid column index {index} for matrice of size {C} (columns) * {R} (rows)");
+    pub fn row_mut(&mut self, index: usize) -> &mut Vector<C, K> {
+        assert!(index < R, "Invalid row index {index} for matrice of size {C} (columns) * {R} (rows)");
         &mut self.0[index]
     }
 }
@@ -32,17 +32,6 @@ impl <const M: usize, K: Default + Copy> Matrix<M, M, K> {
             out[(i, i)] = trace;
         }
         out
-    }
-}
-
-impl <const C: usize, const R: usize, K: Copy + Default> Matrix<C, R, K> {
-    pub fn row(&self, index: usize) -> Vector<C, K> {
-        assert!(index < R, "Invalid row index {index} for matrice of size {C} (columns) * {R} (rows)");
-        let mut t = Vec::with_capacity(C);
-        for i in 0..C {
-            t.push(self.0[i][index]);
-        }
-        Vector::<C, K>::from(t)
     }
 }
 
@@ -64,17 +53,25 @@ impl <const C: usize, const R: usize, K: Display> Display for Matrix<C, R, K> {
         for r in 0..R - 1 {
             f.write_str("\t")?;
             for c in 0..C - 1 {
-                f.write_fmt(format_args!("{}, ", self.0[c][r]))?;
+                f.write_fmt(format_args!("{}, ", self.0[r][c]))?;
             }
-            f.write_fmt(format_args!("{},\n", self.0[C - 1][r]))?;
+            f.write_fmt(format_args!("{},\n", self.0[r][C - 1]))?;
         }
         f.write_str("\t")?;
         for c in 0..C - 1 {
-            f.write_fmt(format_args!("{}, ", self.0[c][R - 1]))?;
+            f.write_fmt(format_args!("{}, ", self.0[R - 1][c]))?;
         }
-        f.write_fmt(format_args!("{}\n]\n", self.0[C - 1][R - 1]))
+        f.write_fmt(format_args!("{}\n]\n", self.0[R - 1][C - 1]))
     }
 }
+
+impl <const C: usize, const R: usize, K: Clone> Clone for Matrix<C, R, K> {
+    fn clone(&self) -> Self {
+        Self(self.0.clone())
+    }
+}
+
+impl <const C: usize, const R: usize, K: Copy> Copy for Matrix<C, R, K> {}
 
 #[cfg(test)]
 mod tests {

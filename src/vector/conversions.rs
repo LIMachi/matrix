@@ -1,12 +1,6 @@
 use crate::matrix::Matrix;
 use super::Vector;
 
-impl <K> From<K> for Vector<1, K> {
-    fn from(value: K) -> Self {
-        Self([value; 1])
-    }
-}
-
 impl <const S: usize, K> From<[K; S]> for Vector<S, K> {
     fn from(value: [K; S]) -> Self {
         Self(value)
@@ -35,26 +29,21 @@ impl <const S: usize, K: Default + Copy> From<Vector<S, K>> for Vec<K> {
     }
 }
 
-impl <const S: usize, K> From<Vector<S, K>> for Matrix<1, S, K> {
+impl <const S: usize, K> From<Vector<S, K>> for Matrix<S, 1, K> {
     fn from(value: Vector<S, K>) -> Self {
-        Matrix::<1, S, K>(Vector::from(value))
+        Matrix::<S, 1, K>(Vector::from([value]))
     }
 }
 
-impl <const _D: usize, const S: usize, K: Copy> From<Matrix<_D, S, K>> for Vector<S, K> {
-    fn from(value: Matrix<_D, S, K>) -> Self {
-        *value.column(0)
+impl <const _D: usize, const S: usize, K: Copy> From<Matrix<S, _D, K>> for Vector<S, K> {
+    fn from(value: Matrix<S, _D, K>) -> Self {
+        *value.row(0)
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_unit_vector() {
-        dbg!(Vector::from(0));
-    }
 
     #[test]
     fn test_vector_from_array() {
@@ -78,11 +67,11 @@ mod tests {
 
     #[test]
     fn test_vector_to_matrix() {
-        dbg!(Matrix::<1, 4, f32>::from(Vector::<4, f32>::default()));
+        dbg!(Matrix::from(Vector::<4, f32>::default()));
     }
 
     #[test]
     fn test_matrix_to_vector() {
-        dbg!(Vector::<4, f32>::from(Matrix::<1, 4, f32>::default()));
+        dbg!(Vector::from(Matrix::<1, 4, f32>::default()));
     }
 }

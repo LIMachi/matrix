@@ -17,6 +17,8 @@ pub trait Sqrf32 {
 pub fn babylonian_sqrt(val: f32) -> f32 {
     if val <= 0. {
         0. //handles negative numbers as 0 (should result in an error or complex number to be exact)
+    } else if val == 1. {
+        1.
     } else {
         let mut mean = (val + 1.) / 2.;
         for _ in 0..8 { //use 8 iterations by default (since f32 has a maximal exponent of 7 bits, I use one more to be extra cautious)

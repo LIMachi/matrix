@@ -17,16 +17,16 @@ mod tests {
 
     #[test]
     fn test_0_trace_unit() {
-        dbg!(Matrix::from([[1., 0.], [0., 1.]]).trace());
+        assert_eq!(dbg!(Matrix::from([[1., 0.], [0., 1.]]).trace()), 2.);
     }
 
     #[test]
     fn test_1_trace() {
-        dbg!(Matrix::from([[2., -5., 0.], [4., 3., 7.], [-2., 3., 4.]]).trace());
+        assert_eq!(dbg!(Matrix::from([[2., -5., 0.], [4., 3., 7.], [-2., 3., 4.]]).trace()), 9.);
     }
 
     #[test]
     fn test_2_neg_trace() {
-        dbg!(Matrix::from([[-2., -8., 4.], [1., -23., 4.], [0., 6., 4.]]).trace());
+        assert_eq!(dbg!(Matrix::from([[-2., -8., 4.], [1., -23., 4.], [0., 6., 4.]]).trace()), -21.);
     }
 }

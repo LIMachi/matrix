@@ -16,13 +16,18 @@ mod tests {
 
     #[test]
     fn test_linear_combination() {
-        let e1 = Vector::from([1., 0., 0.]);
-        let e2 = Vector::from([0., 1., 0.]);
-        let e3 = Vector::from([0., 0., 1.]);
-        let v1 = Vector::from([1., 2., 3.]);
-        let v2 = Vector::from([0., 10., -100.]);
+        assert_eq!(dbg!({
+            let e1 = Vector::from([1., 0., 0.]);
+            let e2 = Vector::from([0., 1., 0.]);
+            let e3 = Vector::from([0., 0., 1.]);
+            let v1 = Vector::from([1., 2., 3.]);
+            let v2 = Vector::from([0., 10., -100.]);
 
-        println!("{}", linear_combination::<3, f32>(&[e1, e2, e3], &[10., -2., 0.5]));
-        println!("{}", linear_combination::<3, f32>(&[v1, v2], &[10., -2.]));
+            let r1 = linear_combination(&[e1, e2, e3], &[10., -2., 0.5]);
+            let r2 = linear_combination(&[v1, v2], &[10., -2.]);
+            println!("{}", r1);
+            println!("{}", r2);
+            (r1, r2)
+         }), (Vector::from([10., -2., 0.5]), Vector::from([10., 0., 230.])));
     }
 }

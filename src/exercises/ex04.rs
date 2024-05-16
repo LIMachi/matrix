@@ -39,19 +39,37 @@ mod tests {
 
     #[test]
     fn test_0_null_vector() {
-        let u = Vector::<3, f32>::from([0., 0., 0.]);
-        println!("{}, {}, {}", u.norm_1(), u.norm(), u.norm_inf());
+        assert_eq!(dbg!({
+            let u = Vector::from([0., 0., 0.]);
+            let n1 = u.norm_1();
+            let n = u.norm();
+            let ni = u.norm_inf();
+            println!("{}, {}, {}", n1, n, ni);
+            (n1, n, ni)
+        }), (0., 0., 0.));
     }
 
     #[test]
     fn test_1_vector() {
-        let u = Vector::<3, f32>::from([1., 2., 3.]);
-        println!("{}, {}, {}", u.norm_1(), u.norm(), u.norm_inf());
+        assert_eq!(dbg!({
+            let u = Vector::from([1., 2., 3.]);
+            let n1 = u.norm_1();
+            let n = u.norm();
+            let ni = u.norm_inf();
+            println!("{}, {}, {}", n1, n, ni);
+            (n1, n, ni)
+        }), (6., 3.7416573, 3.));
     }
 
     #[test]
     fn test_2_negative_vector() {
-        let u = Vector::<2, f32>::from([-1., -2.]);
-        println!("{}, {}, {}", u.norm_1(), u.norm(), u.norm_inf());
+        assert_eq!(dbg!({
+            let u = Vector::from([-1., -2.]);
+            let n1 = u.norm_1();
+            let n = u.norm();
+            let ni = u.norm_inf();
+            println!("{}, {}, {}", n1, n, ni);
+            (n1, n, ni)
+        }), (3.,  2.2360679, 2.));
     }
 }

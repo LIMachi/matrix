@@ -12,46 +12,63 @@ mod tests {
 
     #[test]
     fn test_0_collinear() {
-        dbg!({
-            let u = Vector::<2, f32>::from([1., 0.]);
-            let v = Vector::<2, f32>::from([1., 0.]);
+        assert_eq!(dbg!({
+            let u = Vector::from([1., 0.]);
+            let v = Vector::from([1., 0.]);
             angle_cos(&u, &v)
-        });
+        }), 1.);
     }
 
     #[test]
     fn test_1_perpendicular() {
-        dbg!({
-            let u = Vector::<2, f32>::from([1., 0.]);
-            let v = Vector::<2, f32>::from([0., 1.]);
+        assert_eq!(dbg!({
+            let u = Vector::from([1., 0.]);
+            let v = Vector::from([0., 1.]);
             angle_cos(&u, &v)
-        });
+        }), 0.);
     }
 
     #[test]
     fn test_2_opposites() {
-        dbg!({
-            let u = Vector::<2, f32>::from([-1., 1.]);
-            let v = Vector::<2, f32>::from([1., -1.]);
+        assert_eq!(dbg!({
+            let u = Vector::from([-1., 1.]);
+            let v = Vector::from([1., -1.]);
             angle_cos(&u, &v)
-        });
+        }), -1.); //assert fails due to the sqrt of 2 having an error of 10^-7 in f32
     }
 
     #[test]
-    fn test_3_scaled() {
+    fn test_3_demonstrate_sqrt_of_2() {
+        let mut v;
         dbg!({
-            let u = Vector::<2, f32>::from([2., 1.]);
-            let v = Vector::<2, f32>::from([4., 2.]);
-            angle_cos(&u, &v)
+            v = 2f32.sqrt();
+            v
         });
+        dbg!(v * v);
+        let mut v64;
+        dbg!({
+            v64 = 2f64.sqrt();
+            v64
+        });
+        dbg!(v64 * v64);
+        assert_eq!(v64 * v64, 2.); //the error on sqrt of 2 is even significant enough on f64 to result in an error
     }
 
     #[test]
-    fn test_4_3d() {
-        dbg!({
-            let u = Vector::<3, f32>::from([1., 2., 3.]);
-            let v = Vector::<3, f32>::from([4., 5., 6.]);
+    fn test_4_scaled() {
+        assert_eq!(dbg!({
+            let u = Vector::from([2., 1.]);
+            let v = Vector::from([4., 2.]);
             angle_cos(&u, &v)
-        });
+        }), 1.);
+    }
+
+    #[test]
+    fn test_5_3d() {
+        assert_eq!(dbg!({
+            let u = Vector::from([1., 2., 3.]);
+            let v = Vector::from([4., 5., 6.]);
+            angle_cos(&u, &v)
+        }), 0.9746319);
     }
 }

@@ -18,7 +18,7 @@ mod tests {
 
     #[test]
     fn test_transpose() {
-        dbg!(Matrix::<3, 3, f32>::unit(1.).transpose()); //should be the same
-        dbg!(Matrix::<2, 2, f32>::from([[4., 2.], [6., 9.]]).transpose()); //expected: 4, 6, 2, 9
+        assert_eq!(dbg!(Matrix::<3, 3, f32>::unit(1.).transpose()), Matrix::<3, 3, f32>::unit(1.));
+        assert_eq!(dbg!(Matrix::from([[4., 2.], [6., 9.]]).transpose()), Matrix::from([[4., 6.], [2., 9.]]));
     }
 }

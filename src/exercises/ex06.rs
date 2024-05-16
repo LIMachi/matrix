@@ -15,28 +15,28 @@ mod tests {
 
     #[test]
     fn test_0_z_by_x() {
-        dbg!({
+        assert_eq!(dbg!({
             let u = Vector::from([0., 0., 1.]);
             let v = Vector::from([1., 0., 0.]);
             cross_product(&u, &v)
-        });
+        }), Vector::from([0., 1., 0.]));
     }
 
     #[test]
     fn test_1_cross() {
-        dbg!({
+        assert_eq!(dbg!({
             let u = Vector::from([1., 2., 3.]);
             let v = Vector::from([4., 5., 6.]);
             cross_product(&u, &v)
-        });
+        }), Vector::from([-3., 6., -3.]));
     }
 
     #[test]
     fn test_2_negatives() {
-        dbg!({
+        assert_eq!(dbg!({
             let u = Vector::from([4., 2., -3.]);
             let v = Vector::from([-2., -5., 16.]);
             cross_product(&u, &v)
-        });
+        }), Vector::from([17., -58., -16.]));
     }
 }

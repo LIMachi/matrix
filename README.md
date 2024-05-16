@@ -8,6 +8,7 @@ References used:
 - Approximation of square root using the babylonian method: https://blogs.sas.com/content/iml/2016/05/16/babylonian-square-roots.html
 - Cosine of 2 vectors: https://www.geeksforgeeks.org/cosine-similarity/
 - Multiplication of matrices/vectors: https://mathinsight.org/matrix_vector_multiplication
+- Row-echelon form: https://www.statlect.com/matrix-algebra/row-echelon-form / https://www.wikihow.com/Reduce-a-Matrix-to-Row-Echelon-Form / https://www.emathhelp.net/en/calculators/linear-algebra/reduced-row-echelon-form-rref-calculator/
 
 Rust version: `rustc 1.77.2`
 
@@ -24,8 +25,8 @@ Completion:
 - [x] ex07 linear map, mat mult
 - [x] ex08 trace
 - [x] ex09 transpose
-- [ ] ex10 row echelon form
-- [ ] ex11 determinant
+- [x] ex10 row echelon form
+- [x] ex11 determinant
 - [ ] ex12 inverse
 - [ ] ex13 rank
 - [ ] ex14 projection
