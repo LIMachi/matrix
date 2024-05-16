@@ -9,18 +9,16 @@ mod complex;
 
 fn ex14() {
     let p = exercises::ex14::projection(80f32.to_radians(), 16./9., 0.1, 100.);
-    let mut s = String::new();
+    let mut file = File::create("./proj").unwrap();
     for r in 0..4 {
         for c in 0..3 {
             let v = p[(c, r)];
-            s += format!("{v}{}, ", if v.fract().abs() <= f32::EPSILON { "." } else { "" }).as_str();
+            file.write_fmt(format_args!("{v}{}, ", if v.fract().abs() <= f32::EPSILON { "." } else { "" })).unwrap();
         }
         let v = p[(3, r)];
-        s += format!("{v}{}\n", if v.fract().abs() <= f32::EPSILON { "." } else { "" }).as_str();
+        file.write_fmt(format_args!("{v}{}\n", if v.fract().abs() <= f32::EPSILON { "." } else { "" })).unwrap();
     }
-    let mut file = File::create("./matrix_display/proj").unwrap();
-    file.write_all(s.as_bytes()).unwrap();
-    println!("generated file './matrix_display/proj', now use ./matrix_display/display (test executable provided by 42 for corrections)");
+    println!("generated file './proj', now use ./matrix_display_linux/display or ./matrix_display_mac/display (test executable provided by 42 for corrections)");
 }
 
 fn main() {
