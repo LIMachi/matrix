@@ -80,7 +80,7 @@ mod tests {
                 [0., 1.],
             ]);
             u.mul_mat(&v)
-        }), Matrix::<2, 2, f64>::unit(1.));
+        }), Matrix::<2, 2, f64>::identity());
     }
 
     #[test]

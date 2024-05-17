@@ -29,15 +29,23 @@ impl <const S: usize, K: Default + Copy> From<Vector<S, K>> for Vec<K> {
     }
 }
 
-impl <const S: usize, K> From<Vector<S, K>> for Matrix<S, 1, K> {
+impl <const S: usize, K: Copy + Default> From<Vector<S, K>> for Matrix<1, S, K> {
     fn from(value: Vector<S, K>) -> Self {
-        Matrix::<S, 1, K>(Vector::from([value]))
+        let mut out = Matrix::<1, S, K>::default();
+        for s in 0..S {
+            out[(0, s)] = value[s];
+        }
+        out
     }
 }
 
-impl <const _D: usize, const S: usize, K: Copy> From<Matrix<S, _D, K>> for Vector<S, K> {
-    fn from(value: Matrix<S, _D, K>) -> Self {
-        *value.row(0)
+impl <const _D: usize, const S: usize, K: Copy + Default> From<Matrix<_D, S, K>> for Vector<S, K> {
+    fn from(value: Matrix<_D, S, K>) -> Self {
+        let mut out = Self::default();
+        for s in 0..S {
+            out[s] = value[(0, s)];
+        }
+        out
     }
 }
 
@@ -47,7 +55,7 @@ mod tests {
 
     #[test]
     fn test_vector_from_array() {
-        dbg!(Vector::<4, i32>::from([0; 4]));
+        dbg!(Vector::from([0; 4]));
     }
 
     #[test]
@@ -67,7 +75,9 @@ mod tests {
 
     #[test]
     fn test_vector_to_matrix() {
-        dbg!(Matrix::from(Vector::<4, f32>::default()));
+        let mat = Matrix::from(Vector::<4, f32>::default());
+        println!("{}", mat);
+        dbg!(mat);
     }
 
     #[test]

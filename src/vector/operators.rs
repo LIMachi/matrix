@@ -23,10 +23,10 @@ impl <const S: usize, K> Index<char> for Vector<S, K> {
 
     fn index(&self, index: char) -> &Self::Output {
         match index {
-            'x' | 'r' if S > 0 => &self.0[0],
-            'y' | 'i' if S > 1 => &self.0[1],
-            'z' | 'j' if S > 2 => &self.0[2],
-            'w' | 'k' if S > 3 => &self.0[3],
+            'x' if S > 0 => &self.0[0],
+            'y' if S > 1 => &self.0[1],
+            'z' if S > 2 => &self.0[2],
+            'w' if S > 3 => &self.0[3],
             _ => panic!("Invalid label access {index} for vector of size {S}"),
         }
     }
@@ -35,10 +35,10 @@ impl <const S: usize, K> Index<char> for Vector<S, K> {
 impl <const S: usize, K> IndexMut<char> for Vector<S, K> {
     fn index_mut(&mut self, index: char) -> &mut Self::Output {
         match index {
-            'x' | 'r' if S > 0 => &mut self.0[0],
-            'y' | 'i' if S > 1 => &mut self.0[1],
-            'z' | 'j' if S > 2 => &mut self.0[2],
-            'w' | 'k' if S > 3 => &mut self.0[3],
+            'x' if S > 0 => &mut self.0[0],
+            'y' if S > 1 => &mut self.0[1],
+            'z' if S > 2 => &mut self.0[2],
+            'w' if S > 3 => &mut self.0[3],
             _ => panic!("Invalid label access {index} for vector of size {S}"),
         }
     }

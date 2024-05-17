@@ -1,5 +1,6 @@
 use std::fmt::{Debug, Display, Formatter};
 use crate::matrix::Matrix;
+use crate::utils::Unit;
 use crate::vector::Vector;
 
 impl <const C: usize, const R: usize, K> Matrix<C, R, K> {
@@ -25,11 +26,12 @@ impl <const C: usize, const R: usize, K> Matrix<C, R, K> {
     }
 }
 
-impl <const M: usize, K: Default + Copy> Matrix<M, M, K> {
-    pub fn unit(trace: K) -> Self {
+impl <const M: usize, K: Default + Copy + Unit> Matrix<M, M, K> {
+    pub fn identity() -> Self {
         let mut out = Self::default();
+        let one = K::unit();
         for i in 0..M {
-            out[(i, i)] = trace;
+            out[(i, i)] = one;
         }
         out
     }
@@ -75,6 +77,7 @@ impl <const C: usize, const R: usize, K: Copy> Copy for Matrix<C, R, K> {}
 
 #[cfg(test)]
 mod tests {
+    use crate::matrix::Mat3;
     use super::*;
 
     #[test]
@@ -86,7 +89,7 @@ mod tests {
 
     #[test]
     fn test_unit() {
-        let mat = Matrix::<3, 3, f32>::unit(1.);
+        let mat = Mat3::identity();
         dbg!(&mat);
         println!("{}", mat);
     }

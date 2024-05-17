@@ -1,5 +1,6 @@
-mod abs;
-mod sqr;
+pub mod abs;
+pub mod sqr;
+pub mod unit;
 
 ///note: the subject of ex04 clearly states that those function should work with vector of complex numbers and the result should always be real
 ///this implies the use of complex absolute formula |a+bi| -> sqrt(a² + b²) so |i| -> 1, because of this, I expect K to implement abs (and will implement it myself for absolute numbers for the bonuses)
@@ -10,6 +11,10 @@ pub trait Absf32 {
 
 pub trait Sqrf32 {
     fn sqrf32(self) -> f32;
+}
+
+pub trait Unit {
+    fn unit() -> Self;
 }
 
 ///note: since most exercises do not allow sqrt, here is a brute force version that should be stable enough for demonstration purpose using the babylonian method
@@ -34,7 +39,7 @@ pub fn babylonian_sqrt(val: f32) -> f32 {
 }
 
 #[test]
-fn test_brute_force_sqrt() {
+fn test_babylonian_sqrt() {
     dbg!(babylonian_sqrt(0.));
     dbg!(babylonian_sqrt(4.));
     dbg!(babylonian_sqrt(2.));

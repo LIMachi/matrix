@@ -1,13 +1,15 @@
 use std::fmt::{Debug, Display};
 use std::ops::{Add, Div, Mul, Neg};
 use crate::matrix::Matrix;
+use crate::utils::Unit;
 
 ///note: the examples given in the pdf expect the reduced form of row echelon, not the basic one
 ///otherwise the result of [[1,2],[3,4]] would be [[1,2],[0,-2]], not [[1,0],[0,1]]
 
-impl <const C: usize, const R: usize, K: Default + PartialEq + Copy + Div<Output = K> + Neg<Output = K> + Mul<Output = K> + Add<Output = K> + Display + Debug> Matrix<C, R, K> {
+impl <const C: usize, const R: usize, K: Default + PartialEq + Copy + Div<Output = K> + Neg<Output = K> + Mul<Output = K> + Add<Output = K> + Unit> Matrix<C, R, K> {
     pub fn row_echelon(&self) -> Matrix<C, R, K> {
         let zero = K::default();
+        let one = K::unit();
         let mut out = *self;
         let mut pivot = 0;
         for row in 0..R {
@@ -27,15 +29,17 @@ impl <const C: usize, const R: usize, K: Default + PartialEq + Copy + Div<Output
                     } else {
                         //only zeroes where found, move pivot right
                         pivot += 1;
-                        if out.0[row][pivot] != zero { //next pivot is non zero, no need to check for bubbling
+                        if pivot < C && out.0[row][pivot] != zero { //next pivot is non zero, no need to check for bubbling
                             break;
                         }
                     }
                 }
             }
             if pivot < C {
-                //reduce (make sure the pivot is 1): note: an optimisation could be done by checking if the pivot is already equal to 1
-                out.0[row] = out.0[row] / out.0[row][pivot];
+                //reduce (make sure the pivot is 1)
+                if out.0[row][pivot] != one {
+                    out.0[row] = out.0[row] / out.0[row][pivot];
+                }
                 //solve other rows using this row
                 for r in 0..R {
                     if r != row {
@@ -53,6 +57,7 @@ impl <const C: usize, const R: usize, K: Default + PartialEq + Copy + Div<Output
 
 #[cfg(test)]
 mod tests {
+    use crate::matrix::Mat3;
     use super::*;
 
     #[test]
@@ -60,7 +65,7 @@ mod tests {
         assert_eq!(dbg!({
             let u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
             u.row_echelon()
-        }), Matrix::<3, 3, f32>::unit(1.));
+        }), Mat3::identity());
     }
 
     #[test]
@@ -68,7 +73,7 @@ mod tests {
         assert_eq!(dbg!({
             let u = Matrix::from([[1., 2.], [3., 4.]]);
             u.row_echelon()
-        }), Matrix::<2, 2, f32>::unit(1.));
+        }), Matrix::<2, 2, f32>::identity());
     }
 
     #[test]

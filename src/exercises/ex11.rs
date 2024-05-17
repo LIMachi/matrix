@@ -2,8 +2,19 @@ use std::ops::{Add, Mul, Sub};
 use crate::matrix::Matrix;
 
 //https://en.wikipedia.org/wiki/Determinant
+//https://www.youtube.com/watch?v=Ip3X9LOh2dk&list=PL0-GT3co4r2y2YErbmuJw2L5tW4Ew2O5B&index=7
 
-//TODO: watch 3 blue 1 brown since the subject ask for it
+//what det represents geometrically ->
+
+//deformation of the space (change of area/volume in case of scaling, or change of orientation/form in case of shearing)
+//ex: det 6 means that all objects represented by points/vectors in the space will have a new area/volume 6 times bigger than before (does not indicate a change of shape though)
+//det 1 means that all objects represented by points/vectors in the space might have their shape changed, but their area/volume will stay the same (ex: square 1*1 becomes a parallelogram 1*1)
+//a negative determinant in 2d represents a flip in axis (that X and Y axis have been exchanged, but does not give us the exact rotation)
+//in 3d, positive determinant means that all the axis are still in their original order: normal of the planes XY, YZ, XZ (XY -> aka cross product of the vectors [1, 0, 0] x [0, 1, 0]) are still pointing in the same relative direction
+//but a negative determinant means that at least one of the normals is now inverted (ex: plane XY used to have a normal pointing towards Z, but now points towards -Z, while the other two planes still have positive normals)
+
+//det 0 means that all vectors inside the space will now be collinear in 2d or on the same plane in 3d (and more generally, means that one dimension was lost)
+//if the matrix represents the 2d space xy, but we rotate it in 3d space around the x or y axis by 90 degrees, then we end up with the y or x axis swapped with the z axis and we end up with a line from the 2d view xy
 
 impl <K: Copy> Matrix<1, 1, K> {
     pub fn determinant(&self) -> K {

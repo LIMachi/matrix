@@ -1,4 +1,5 @@
 use std::fmt::{Debug, Display, Formatter};
+use std::ops::Index;
 use super::Vector;
 
 impl <const S: usize, K: Default + Copy> Default for Vector<S, K> {
@@ -35,6 +36,16 @@ impl <const S: usize, K: Clone> Clone for Vector<S, K>{
 
 impl <const S: usize, K: Copy> Copy for Vector<S, K>{}
 
+impl <const S: usize, K: Copy + Default> Vector<S, K> {
+    pub fn swizzle<const L: usize, I: Copy>(&self, indexes: [I; L]) -> Vector<L, K> where Vector<S, K>: Index<I, Output = K> {
+        let mut out = Vector::<L, K>::default();
+        for l in 0..L {
+            out[l] = self[indexes[l]];
+        }
+        out
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -47,5 +58,10 @@ mod tests {
     #[test]
     fn test_display() {
         println!("{}", Vector::<2, i32>::default());
+    }
+
+    #[test]
+    fn test_swizzle() {
+        dbg!(Vector::from([0., 1., 2., 3.]).swizzle([3, 2, 3, 0]));
     }
 }
