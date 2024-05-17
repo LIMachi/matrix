@@ -1,5 +1,6 @@
 use crate::complex::Complex;
-use crate::utils::{Absf32, babylonian_sqrt};
+use crate::quaternion::Quaternion;
+use super::{Absf32, babylonian_sqrt};
 
 impl Absf32 for f32 { fn absf32(self) -> f32 { self.abs() } }
 impl Absf32 for f64 { fn absf32(self) -> f32 { self.abs() as f32 } }
@@ -12,6 +13,12 @@ impl Absf32 for i128 { fn absf32(self) -> f32 { self.abs() as f32 } }
 impl Absf32 for Complex {
     fn absf32(self) -> f32 {
         babylonian_sqrt(self.r * self.r + self.i * self.i)
+    }
+}
+
+impl Absf32 for Quaternion {
+    fn absf32(self) -> f32 {
+        todo!()
     }
 }
 

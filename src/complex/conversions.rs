@@ -1,4 +1,4 @@
-use crate::complex::Complex;
+use super::Complex;
 
 impl From<f32> for Complex {
     fn from(value: f32) -> Self {
@@ -9,6 +9,7 @@ impl From<f32> for Complex {
     }
 }
 
+#[derive(Debug)]
 pub enum ComplexError {
     CantCoerceComplexToRealDueToImaginaryPart
 }

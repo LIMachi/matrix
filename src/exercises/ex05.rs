@@ -39,13 +39,13 @@ mod tests {
 
     #[test]
     fn test_3_demonstrate_sqrt_of_2() {
-        let mut v;
+        let v;
         dbg!({
             v = 2f32.sqrt();
             v
         });
         dbg!(v * v);
-        let mut v64;
+        let v64;
         dbg!({
             v64 = 2f64.sqrt();
             v64

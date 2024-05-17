@@ -1,5 +1,6 @@
 use crate::complex::Complex;
-use crate::utils::{Sqrf32};
+use crate::quaternion::Quaternion;
+use super::Sqrf32;
 
 impl Sqrf32 for f32 { fn sqrf32(self) -> f32 { self * self } }
 impl Sqrf32 for f64 { fn sqrf32(self) -> f32 { (self * self) as f32 } }
@@ -17,5 +18,11 @@ impl Sqrf32 for u128 { fn sqrf32(self) -> f32 { (self * self) as f32 } }
 impl Sqrf32 for Complex {
     fn sqrf32(self) -> f32 {
         self.r * self.r - self.i * self.i
+    }
+}
+
+impl Sqrf32 for Quaternion {
+    fn sqrf32(self) -> f32 {
+        todo!()
     }
 }

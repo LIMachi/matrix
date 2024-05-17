@@ -1,5 +1,5 @@
 use std::ops::{Add, Div, Index, IndexMut, Mul, Sub};
-use crate::matrix::Matrix;
+use super::Matrix;
 use crate::vector::Vector;
 
 impl <const C: usize, const R: usize, K> Index<usize> for Matrix<C, R, K> {

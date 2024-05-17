@@ -1,5 +1,5 @@
 use std::fmt::{Debug, Display, Formatter};
-use crate::matrix::Matrix;
+use super::Matrix;
 use crate::utils::Unit;
 use crate::vector::Vector;
 

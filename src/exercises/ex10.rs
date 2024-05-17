@@ -1,4 +1,3 @@
-use std::fmt::{Debug, Display};
 use std::ops::{Add, Div, Mul, Neg};
 use crate::matrix::Matrix;
 use crate::utils::Unit;

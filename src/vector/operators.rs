@@ -1,5 +1,5 @@
-use std::ops::{Add, Div, Index, IndexMut, Mul, Sub};
-use crate::vector::Vector;
+use std::ops::{Add, Div, Index, IndexMut, Mul, Neg, Sub};
+use super::Vector;
 
 impl <const S: usize, K> Index<usize> for Vector<S, K> {
     type Output = K;
@@ -83,6 +83,17 @@ impl <const S: usize, K: Sub<Output = K> + Copy> Sub<K> for Vector<S, K> {
     fn sub(mut self, rhs: K) -> Self::Output {
         for i in 0..S {
             self[i] = self[i] - rhs;
+        }
+        self
+    }
+}
+
+impl <const S: usize, K: Neg<Output=K> + Copy> Neg for Vector<S, K> {
+    type Output = Self;
+
+    fn neg(mut self) -> Self::Output {
+        for i in 0..S {
+            self[i] = -self[i];
         }
         self
     }

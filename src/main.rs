@@ -6,6 +6,7 @@ mod matrix;
 mod exercises;
 mod utils;
 mod complex;
+mod quaternion;
 
 fn ex14() {
     let p = exercises::ex14::projection(80f32.to_radians(), 16./9., 0.1, 100.);

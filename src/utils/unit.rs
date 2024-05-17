@@ -1,5 +1,6 @@
 use crate::complex::Complex;
-use crate::utils::Unit;
+use crate::quaternion::Quaternion;
+use super::Unit;
 
 impl Unit for f32 { fn unit() -> Self { 1. } }
 impl Unit for f64 { fn unit() -> Self { 1. } }
@@ -19,6 +20,17 @@ impl Unit for Complex {
         Self {
             r: 1.,
             i: 0.
+        }
+    }
+}
+
+impl Unit for Quaternion {
+    fn unit() -> Self {
+        Self {
+            r: 1.,
+            i: 0.,
+            j: 0.,
+            k: 0.
         }
     }
 }

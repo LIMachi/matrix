@@ -1,6 +1,5 @@
 use std::fmt::{Debug, Display, Formatter};
-use std::ops::{Add, Div, Mul, Sub};
-use crate::complex::Complex;
+use super::Complex;
 
 impl Default for Complex {
     fn default() -> Self {
@@ -39,60 +38,3 @@ impl Clone for Complex {
 }
 
 impl Copy for Complex {}
-
-impl PartialEq for Complex {
-    fn eq(&self, other: &Self) -> bool {
-        self.r == other.r && self.i == other.i
-    }
-}
-
-impl PartialEq<f32> for Complex {
-    fn eq(&self, other: &f32) -> bool {
-        self.i == 0. && self.r == *other
-    }
-}
-
-impl Add for Complex {
-    type Output = Self;
-
-    fn add(self, rhs: Self) -> Self::Output {
-        Self {
-            r: self.r + rhs.r,
-            i: self.i + rhs.i
-        }
-    }
-}
-
-impl Sub for Complex {
-    type Output = Self;
-
-    fn sub(self, rhs: Self) -> Self::Output {
-        Self {
-            r: self.r - rhs.r,
-            i: self.i - rhs.i
-        }
-    }
-}
-
-impl Mul for Complex {
-    type Output = Self;
-
-    fn mul(self, rhs: Self) -> Self::Output {
-        Self {
-            r: self.r * rhs.r - self.i * rhs.i,
-            i: self.r * rhs.i + self.i * rhs.r
-        }
-    }
-}
-
-impl Div for Complex {
-    type Output = Self;
-
-    fn div(self, rhs: Self) -> Self::Output {
-        let div = rhs.r * rhs.r + rhs.i * rhs.i;
-        Self {
-            r: (self.r * rhs.r + self.i * rhs.i) / div,
-            i: (self.i * rhs.r - self.r * rhs.i) / div
-        }
-    }
-}

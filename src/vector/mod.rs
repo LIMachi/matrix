@@ -1,6 +1,6 @@
-mod utilities;
-mod conversions;
-mod operators;
+pub mod utilities;
+pub mod conversions;
+pub mod operators;
 
 pub struct Vector<const S: usize, K>(pub(crate) [K; S]);
 
