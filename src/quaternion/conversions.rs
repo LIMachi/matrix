@@ -1,6 +1,6 @@
 use crate::complex::Complex;
 use crate::matrix::Mat4;
-use crate::utils::Unit;
+use crate::unit::Unit;
 use crate::vector::{Vec3, Vec4};
 use super::Quaternion;
 

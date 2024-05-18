@@ -1,11 +1,13 @@
 use std::ops::{Add, Mul};
 use crate::vector::Vector;
 
-pub fn linear_combination<const S: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>>(u: &[Vector<S, K>], coefs: &[K]) -> Vector<S, K> {
-    assert_eq!(u.len(), coefs.len(), "Mismatched sizes of arrays: {} vectors for {} coefficients", u.len(), coefs.len());
+///since newer versions of rust allow the use of const generic (generics that represent values instead of types),
+///we can write methods that check at compile time that the parameters are of correct size
+///(so I don't need to check at run time if u and coefficients are arrays of same size)
+pub fn linear_combination<const S: usize, const A: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>>(u: &[Vector<S, K>; A], coefficients: &[K; A]) -> Vector<S, K> {
     let mut acc = Vector::<S, K>::default();
     for i in 0..u.len() {
-        acc = acc + u[i] * coefs[i];
+        acc = acc + u[i] * coefficients[i];
     }
     acc
 }

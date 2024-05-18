@@ -1,6 +1,6 @@
 use std::fmt::{Debug, Display, Formatter};
 use super::Matrix;
-use crate::utils::Unit;
+use crate::unit::Unit;
 use crate::vector::Vector;
 
 impl <const C: usize, const R: usize, K> Matrix<C, R, K> {

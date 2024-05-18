@@ -1,5 +1,6 @@
 use crate::matrix::Matrix;
 
+//TODO: test on a linux or mac with vulkan (as the executable given by 42 uses vulkan and crashes on virtual machines due to vulkan not being available)
 pub fn projection(fov: f32, ratio: f32, near: f32, far: f32) -> Matrix<4, 4, f32> {
     let s = 1. / (fov / 2.).tan();
     let l = near - far;

@@ -1,6 +1,12 @@
 use crate::complex::Complex;
 use crate::quaternion::Quaternion;
-use super::Unit;
+
+///helper trait used to get the value of 1 for random types (and also flag types that do not have a value of 1 available)
+///https://github.com/rust-lang/rfcs/pull/3490
+///still waiting for const trait functions :)
+pub trait Unit {
+    fn unit() -> Self;
+}
 
 impl Unit for f32 { fn unit() -> Self { 1. } }
 impl Unit for f64 { fn unit() -> Self { 1. } }

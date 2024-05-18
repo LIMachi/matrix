@@ -1,74 +1,72 @@
-use std::ops::{Add, Mul, Sub};
-use crate::utils::{Absf32, Sqrf32};
+use std::ops::{Add, Div, Mul};
+use crate::exercises::ex04::Norm;
 use crate::vector::Vector;
 
-pub fn angle_cos<const S: usize, K: Into<f32> + Copy + Add<Output = K> + Default + Sqrf32 + Sub<Output = K> + Absf32 + Mul<Output = K>>(u: &Vector<S, K>, v: &Vector<S, K>) -> f32 {
-    u.dot(v).into() / (u.norm() * v.norm())
+impl <const S: usize, K: Copy + Add<Output = K> + Mul<Output = K> + Div<Output = K> + Norm + Default + From<f32>> Vector<S, K> {
+    ///I decided to make this function a method of Vector
+    ///also, I made the type of return value K (since the angle might not be real with vectors of complex numbers)
+    pub fn angle_cos(&self, v: &Self) -> K {
+        self.dot(v) / K::from(self.norm() * v.norm())
+    }
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::assert_f32_eq;
+    use crate::complex::Complex;
     use super::*;
 
     #[test]
     fn test_0_collinear() {
-        assert_eq!(dbg!({
+        assert_f32_eq(dbg!({
             let u = Vector::from([1., 0.]);
             let v = Vector::from([1., 0.]);
-            angle_cos(&u, &v)
+            u.angle_cos(&v)
         }), 1.);
     }
 
     #[test]
     fn test_1_perpendicular() {
-        assert_eq!(dbg!({
+        assert_f32_eq(dbg!({
             let u = Vector::from([1., 0.]);
             let v = Vector::from([0., 1.]);
-            angle_cos(&u, &v)
+            u.angle_cos(&v)
         }), 0.);
     }
 
     #[test]
     fn test_2_opposites() {
-        assert_eq!(dbg!({
+        assert_f32_eq(dbg!({
             let u = Vector::from([-1., 1.]);
             let v = Vector::from([1., -1.]);
-            angle_cos(&u, &v)
-        }), -1.); //assert fails due to the sqrt of 2 having an error of 10^-7 in f32
+            u.angle_cos(&v)
+        }), -1.);
     }
 
     #[test]
-    fn test_3_demonstrate_sqrt_of_2() {
-        let v;
-        dbg!({
-            v = 2f32.sqrt();
-            v
-        });
-        dbg!(v * v);
-        let v64;
-        dbg!({
-            v64 = 2f64.sqrt();
-            v64
-        });
-        dbg!(v64 * v64);
-        assert_eq!(v64 * v64, 2.); //the error on sqrt of 2 is even significant enough on f64 to result in an error
-    }
-
-    #[test]
-    fn test_4_scaled() {
-        assert_eq!(dbg!({
+    fn test_3_scaled() {
+        assert_f32_eq(dbg!({
             let u = Vector::from([2., 1.]);
             let v = Vector::from([4., 2.]);
-            angle_cos(&u, &v)
+            u.angle_cos(&v)
         }), 1.);
     }
 
     #[test]
-    fn test_5_3d() {
-        assert_eq!(dbg!({
+    fn test_4_3d() {
+        assert_f32_eq(dbg!({
             let u = Vector::from([1., 2., 3.]);
             let v = Vector::from([4., 5., 6.]);
-            angle_cos(&u, &v)
-        }), 0.9746319);
+            u.angle_cos(&v)
+        }), 0.974631896316349);
+    }
+
+    #[test]
+    fn test_5_complex() {
+        dbg!({
+            let u = Vector::from([Complex::from_i(2.), Complex::new(1., 1.)]);
+            let v = Vector::from([Complex::new(1., 1.), Complex::from_i(2.)]);
+            u.angle_cos(&v)
+        });
     }
 }

@@ -1,6 +1,6 @@
 use std::ops::{Add, Div, Mul, Neg};
 use crate::matrix::Matrix;
-use crate::utils::Unit;
+use crate::unit::Unit;
 use crate::vector::Vector;
 
 //https://en.wikipedia.org/wiki/Rank_(linear_algebra)

@@ -2,63 +2,65 @@ use std::ops::{Add, Mul, Sub};
 use crate::matrix::Matrix;
 use crate::vector::Vector;
 
-pub trait Ex00add {
-    fn add(&mut self, other: &Self);
-}
+///instead of using the given prototypes (which use hold rust notation)
+///I opted to implement add and sub as actual operator overloads
+///and generalised scl method to any type that return itself when multiplied by a scalar
 
-pub trait Ex00sub {
-    fn sub(&mut self, other: &Self);
-}
-
-pub trait Ex00scl<K: Mul<Output = K> + Copy> {
+pub trait Ex00scl<K: Copy>: Mul<K, Output = Self> + Copy {
     fn scl(&mut self, scalar: K);
 }
 
-impl <const S: usize, K: Add<Output = K> + Copy> Ex00add for Vector<S, K> {
-    fn add(&mut self, other: &Self) {
-        for i in 0..S {
-            self[i] = self[i] + other[i];
-        }
-    }
-}
-
-impl <const S: usize, K: Sub<Output = K> + Copy> Ex00sub for Vector<S, K> {
-    fn sub(&mut self, other: &Self) {
-        for i in 0..S {
-            self[i] = self[i] - other[i];
-        }
-    }
-}
-
-impl <const S: usize, K: Mul<Output = K> + Copy> Ex00scl<K> for Vector<S, K> {
+impl <K: Copy, T: Mul<K, Output = T> + Copy> Ex00scl<K> for T {
     fn scl(&mut self, scalar: K) {
+        *self = *self * scalar
+    }
+}
+
+impl <const S: usize, K: Add<Output = K> + Copy> Add for Vector<S, K> {
+    type Output = Self;
+
+    fn add(mut self, rhs: Self) -> Self::Output {
         for i in 0..S {
-            self[i] = self[i] * scalar;
+            self[i] = self[i] + rhs[i];
         }
+        self
     }
 }
 
-impl <const R: usize, const C: usize, K: Add<Output = K> + Copy> Ex00add for Matrix<R, C, K> {
-    fn add(&mut self, other: &Self) {
-        for i in 0..C {
-            self.row_mut(i).add(other.row(i));
+impl <const S: usize, K: Sub<Output = K> + Copy> Sub for Vector<S, K> {
+    type Output = Self;
+
+    fn sub(mut self, rhs: Self) -> Self::Output {
+        for i in 0..S {
+            self[i] = self[i] - rhs[i];
         }
+        self
     }
 }
 
-impl <const R: usize, const C: usize, K: Sub<Output = K> + Copy> Ex00sub for Matrix<R, C, K> {
-    fn sub(&mut self, other: &Self) {
-        for i in 0..C {
-            self.row_mut(i).sub(other.row(i));
+impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add for Matrix<C, R, K> {
+    type Output = Self;
+
+    fn add(mut self, rhs: Self) -> Self::Output {
+        for r in 0..R {
+            for c in 0..C {
+                self[(c, r)] = self[(c, r)] + rhs[(c, r)];
+            }
         }
+        self
     }
 }
 
-impl <const R: usize, const C: usize, K: Mul<Output = K> + Copy> Ex00scl<K> for Matrix<R, C, K> {
-    fn scl(&mut self, scalar: K) {
-        for i in 0..C {
-            self.row_mut(i).scl(scalar);
+impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub for Matrix<C, R, K> {
+    type Output = Self;
+
+    fn sub(mut self, rhs: Self) -> Self::Output {
+        for r in 0..R {
+            for c in 0..C {
+                self[(c, r)] = self[(c, r)] - rhs[(c, r)];
+            }
         }
+        self
     }
 }
 
@@ -66,25 +68,23 @@ impl <const R: usize, const C: usize, K: Mul<Output = K> + Copy> Ex00scl<K> for 
 mod tests {
     use crate::vector::Vector;
     use crate::matrix::Matrix;
-    use super::{Ex00add, Ex00sub, Ex00scl};
+    use super::Ex00scl;
 
     #[test]
     fn test_0_add_vectors() {
         assert_eq!(dbg!({
-            let mut u = Vector::from([2., 3.]);
+            let u = Vector::from([2., 3.]);
             let v = Vector::from([5., 7.]);
-            u.add(&v);
-            u
+            u + v
         }), Vector::from([7., 10.]));
     }
 
     #[test]
     fn test_1_sub_vectors() {
         assert_eq!(dbg!({
-            let mut u = Vector::from([2., 3.]);
+            let u = Vector::from([2., 3.]);
             let v = Vector::from([5., 7.]);
-            u.sub(&v);
-            u
+            u - v
         }), Vector::from([-3., -4.]));
     }
 
@@ -100,20 +100,18 @@ mod tests {
     #[test]
     fn test_3_add_matrices() {
         assert_eq!(dbg!({
-            let mut u = Matrix::from([[1., 2.], [3., 4.]]);
+            let u = Matrix::from([[1., 2.], [3., 4.]]);
             let v = Matrix::from([[7., 4.], [-2., 2.]]);
-            u.add(&v);
-            u
+            u + v
         }), Matrix::from([[8., 6.], [1., 6.]]));
     }
 
     #[test]
     fn test_4_sub_matrices() {
         assert_eq!(dbg!({
-            let mut u = Matrix::from([[1., 2.], [3., 4.]]);
+            let u = Matrix::from([[1., 2.], [3., 4.]]);
             let v = Matrix::from([[7., 4.], [-2., 2.]]);
-            u.sub(&v);
-            u
+            u - v
         }), Matrix::from([[-6., -2.], [5., 2.]]));
     }
 

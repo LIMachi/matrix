@@ -1,6 +1,6 @@
 use std::ops::{Add, Div, Mul, Neg};
 use crate::matrix::Matrix;
-use crate::utils::Unit;
+use crate::unit::Unit;
 
 ///note: the examples given in the pdf expect the reduced form of row echelon, not the basic one
 ///otherwise the result of [[1,2],[3,4]] would be [[1,2],[0,-2]], not [[1,0],[0,1]]

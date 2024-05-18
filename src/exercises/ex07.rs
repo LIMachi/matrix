@@ -1,25 +1,32 @@
-use std::fmt::Debug;
 use std::ops::{Add, Mul};
 use crate::matrix::Matrix;
 use crate::vector::Vector;
 
-impl <const C: usize, const R: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K> + Debug> Matrix<C, R, K> {
-    pub fn mul_vec(&self, vec: &Vector<R, K>) -> Vector<C, K> {
+///replaced mul_vec by the operator `mat * vec -> vec` and mul_mat by the operator `mat * mat -> mat`
+
+impl <const C: usize, const R: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<Vector<R, K>> for Matrix<C, R, K> {
+    type Output = Vector<C, K>;
+
+    fn mul(self, rhs: Vector<R, K>) -> Self::Output {
         let mut out = Vector::<C, K>::default();
         for i in 0..R {
             for n in 0..C {
-                out[i] = out[i] + vec[n] * self[(n, i)];
+                out[i] = out[i] + rhs[n] * self[(n, i)];
             }
         }
         out
     }
+}
 
-    pub fn mul_mat<const P: usize>(&self, mat: &Matrix<P, C, K>) -> Matrix<P, R, K> {
+impl <const C: usize, const R: usize, const P: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<Matrix<P, C, K>> for Matrix<C, R, K> {
+    type Output = Matrix<P, R, K>;
+
+    fn mul(self, rhs: Matrix<P, C, K>) -> Self::Output {
         let mut out = Matrix::<P, R, K>::default();
         for p in 0..P {
             for c in 0..C {
                 for r in 0..R {
-                    out[(p, r)] = out[(p, r)] + self[(c, r)] * mat[(p, c)];
+                    out[(p, r)] = out[(p, r)] + self[(c, r)] * rhs[(p, c)];
                 }
             }
         }
@@ -39,8 +46,7 @@ mod tests {
                 [0., 1.],
             ]);
             let v = Vector::from([4., 2.]);
-            let out = u.mul_vec(&v);
-            out
+            u * v
         }), Vector::from([4., 2.]));
     }
 
@@ -52,7 +58,7 @@ mod tests {
                 [0., 2.],
             ]);
             let v = Vector::from([4., 2.]);
-            u.mul_vec(&v)
+            u * v
         }), Vector::from([8., 4.]));
     }
 
@@ -64,7 +70,7 @@ mod tests {
                 [-2., 2.],
             ]);
             let v = Vector::from([4., 2.]);
-            u.mul_vec(&v)
+            u * v
         }), Vector::from([4., -4.]));
     }
 
@@ -79,7 +85,7 @@ mod tests {
                 [1., 0.],
                 [0., 1.],
             ]);
-            u.mul_mat(&v)
+            u * v
         }), Matrix::<2, 2, f64>::identity());
     }
 
@@ -94,7 +100,7 @@ mod tests {
                 [2., 1.],
                 [4., 2.],
             ]);
-            u.mul_mat(&v)
+            u * v
         }), Matrix::from([[2., 1.], [4., 2.]]));
     }
 
@@ -109,7 +115,7 @@ mod tests {
                 [2., 1.],
                 [4., 2.],
             ]);
-            u.mul_mat(&v)
+            u * v
         }), Matrix::from([[-14., -7.], [44., 22.]]));
     }
 
@@ -125,7 +131,7 @@ mod tests {
                 [9., 10.],
                 [11., 12.]
             ]);
-            u.mul_mat(&v)
+            u * v
         }), Matrix::from([[58., 64.], [139., 154.]]));
     }
 }

@@ -1,6 +1,6 @@
 use std::fmt::{Debug, Display, Formatter};
 use std::ops::{Add, Div, Index, Mul};
-use crate::utils::Unit;
+use crate::unit::Unit;
 use super::Vector;
 
 impl <const S: usize, K: Default + Copy> Default for Vector<S, K> {

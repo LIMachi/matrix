@@ -36,19 +36,6 @@ impl <const C: usize, const R: usize, K> IndexMut<(usize, usize)> for Matrix<C, 
     }
 }
 
-impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add for Matrix<C, R, K> {
-    type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
-        for r in 0..R {
-            for c in 0..C {
-                self[(c, r)] = self[(c, r)] + rhs[(c, r)];
-            }
-        }
-        self
-    }
-}
-
 impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<K> for Matrix<C, R, K> {
     type Output = Self;
 
@@ -68,19 +55,6 @@ impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<Vector<C, K
     fn add(mut self, rhs: Vector<C, K>) -> Self::Output {
         for r in 0..R {
             self[r] = self[r] + rhs;
-        }
-        self
-    }
-}
-
-impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub for Matrix<C, R, K> {
-    type Output = Self;
-
-    fn sub(mut self, rhs: Self) -> Self::Output {
-        for r in 0..R {
-            for c in 0..C {
-                self[(c, r)] = self[(c, r)] - rhs[(c, r)];
-            }
         }
         self
     }
