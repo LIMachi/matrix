@@ -24,6 +24,17 @@ impl Add for Complex {
     }
 }
 
+impl Add<f32> for Complex {
+    type Output = Self;
+
+    fn add(self, rhs: f32) -> Self::Output {
+        Self {
+            r: self.r + rhs,
+            i: self.i
+        }
+    }
+}
+
 impl Sub for Complex {
     type Output = Self;
 
@@ -31,6 +42,17 @@ impl Sub for Complex {
         Self {
             r: self.r - rhs.r,
             i: self.i - rhs.i
+        }
+    }
+}
+
+impl Sub<f32> for Complex {
+    type Output = Self;
+
+    fn sub(self, rhs: f32) -> Self::Output {
+        Self {
+            r: self.r - rhs,
+            i: self.i
         }
     }
 }
@@ -57,6 +79,17 @@ impl Mul for Complex {
     }
 }
 
+impl Mul<f32> for Complex {
+    type Output = Self;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        Self {
+            r: self.r * rhs,
+            i: self.i * rhs
+        }
+    }
+}
+
 impl Div for Complex {
     type Output = Self;
 
@@ -65,6 +98,17 @@ impl Div for Complex {
         Self {
             r: (self.r * rhs.r + self.i * rhs.i) / div,
             i: (self.i * rhs.r - self.r * rhs.i) / div
+        }
+    }
+}
+
+impl Div<f32> for Complex {
+    type Output = Self;
+
+    fn div(self, rhs: f32) -> Self::Output {
+        Self {
+            r: self.r / rhs,
+            i: self.i / rhs
         }
     }
 }

@@ -1,6 +1,6 @@
 use std::fmt::{Debug, Display, Formatter};
 use std::ops::{Add, Div, Index, Mul};
-use crate::unit::Unit;
+use crate::utils::Unit;
 use super::Vector;
 
 impl <const S: usize, K: Default + Copy> Default for Vector<S, K> {
@@ -17,11 +17,11 @@ impl <const S: usize, K: Debug> Debug for Vector<S, K> {
 
 impl <const S: usize, K: Display> Display for Vector<S, K> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        f.write_str("Vector: [")?;
+        f.write_str("[")?;
         for i in 0..S - 1 {
             f.write_fmt(format_args!("{}, ", self.0[i]))?;
         }
-        f.write_fmt(format_args!("{}]\n", self.0[S - 1]))
+        f.write_fmt(format_args!("{}]", self.0[S - 1]))
     }
 }
 

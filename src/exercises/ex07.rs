@@ -1,5 +1,7 @@
 use std::ops::{Add, Mul};
 use crate::matrix::Matrix;
+use crate::result;
+use crate::utils::ex;
 use crate::vector::Vector;
 
 ///replaced mul_vec by the operator `mat * vec -> vec` and mul_mat by the operator `mat * mat -> mat`
@@ -32,6 +34,19 @@ impl <const C: usize, const R: usize, const P: usize, K: Default + Copy + Mul<Ou
         }
         out
     }
+}
+
+pub fn ex07() {
+    ex(7, "Linear map, matrix multiplication");
+    result!(
+        Matrix::from([[1., 0.], [0., 1.]]) * Vector::from([4., 2.]),
+        Matrix::from([[2., 0.], [0., 2.]]) * Vector::from([4., 2.]),
+        Matrix::from([[2., -2.], [-2., 2.]]) * Vector::from([4., 2.]),
+        Matrix::<2, 2, f64>::identity(),
+        Matrix::<2, 2, f64>::identity() * Matrix::<2, 2, f64>::identity(),
+        Matrix::<2, 2, f64>::identity() * Matrix::from([[2., 1.], [4., 2.]]),
+        Matrix::from([[3., -5.], [6., 8.]]) * Matrix::from([[2., 1.], [4., 2.]])
+    );
 }
 
 #[cfg(test)]

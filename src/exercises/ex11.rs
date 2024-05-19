@@ -1,5 +1,7 @@
 use std::ops::{Add, Mul, Sub};
-use crate::matrix::Matrix;
+use crate::matrix::{Mat3, Matrix};
+use crate::{result, show};
+use crate::utils::ex;
 
 //https://en.wikipedia.org/wiki/Determinant
 //https://www.youtube.com/watch?v=Ip3X9LOh2dk&list=PL0-GT3co4r2y2YErbmuJw2L5tW4Ew2O5B&index=7
@@ -67,6 +69,27 @@ impl <K: Copy + Mul<Output = K> + Sub<Output = K> + Add<Output = K>> Matrix<4, 4
                 + self.0[2][0] * self.0[1][1] * self.0[3][2] * self.0[0][3]
                 + self.0[1][0] * self.0[3][1] * self.0[2][2] * self.0[0][3]
     }
+}
+
+pub fn ex11() {
+    ex(11, "Determinant");
+    result!(
+        Matrix::from([[1., -1.], [-1., 1.]]).determinant(),
+        Mat3::identity() * 2.,
+        (Mat3::identity() * 2.).determinant(),
+        Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.]]).determinant(),
+    );
+    let r0;
+    let r1;
+    let r2;
+    let r3;
+    show!(
+        r0 = [8., 5., -2., 4.],
+        r1 = [4., 2.5, 20., 4.],
+        r2 = [8., 5., 1., 4.],
+        r3 = [28., -4., 17., 1.],
+    );
+    result!(Matrix::from([r0, r1, r2, r3]).determinant());
 }
 
 #[cfg(test)]

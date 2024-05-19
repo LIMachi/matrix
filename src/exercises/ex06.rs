@@ -1,4 +1,6 @@
 use std::ops::{Mul, Sub};
+use crate::result;
+use crate::utils::ex;
 use crate::vector::Vector;
 
 impl <K: Mul<Output = K> + Sub<Output = K> + Copy> Vector<3, K> {
@@ -10,6 +12,15 @@ impl <K: Mul<Output = K> + Sub<Output = K> + Copy> Vector<3, K> {
             self.0[0] * v.0[1] - self.0[1] * v.0[0],
         ])
     }
+}
+
+pub fn ex06() {
+    ex(6, "Cross product");
+    result!(
+        Vector::from([0., 0., 1.]).cross_product(&Vector::from([1., 0., 1.])),
+        Vector::from([1., 2., 3.]).cross_product(&Vector::from([4., 5., 6.])),
+        Vector::from([0., 0., 1.]).cross_product(&Vector::from([1., 0., 1.])),
+    );
 }
 
 #[cfg(test)]

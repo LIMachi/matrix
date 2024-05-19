@@ -1,4 +1,8 @@
 use std::ops::{Add, Mul};
+use crate::{result, show};
+use crate::matrix::Matrix;
+use crate::utils::ex;
+use crate::vector::Vector;
 
 pub trait Lerp {
     ///I decided to make this function a method of any type that implement the correct operations
@@ -9,6 +13,21 @@ impl <T: Add<Output = T> + Mul<f32, Output = T> + Copy> Lerp for T {
     fn lerp(&self, v: Self, t: f32) -> Self {
         *self * (1. - t) + v * t
     }
+}
+
+pub fn ex02() {
+    ex(2, "Linear interpolation");
+    result!(
+        0f32.lerp(1., 0.),
+        0f32.lerp(1., 1.),
+        0f32.lerp(1., 0.5),
+        21f32.lerp(42., 0.3),
+        Vector::from([2., 1.]).lerp(Vector::from([4., 2.]), 0.3)
+    );
+    let m1;
+    let m2;
+    show!(m1 = Matrix::from([[2., 1.], [3., 4.]]), m2 = Matrix::from([[20., 10.], [30., 40.]]));
+    result!(m1.lerp(m2, 0.5));
 }
 
 #[cfg(test)]

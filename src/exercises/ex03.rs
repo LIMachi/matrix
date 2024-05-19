@@ -1,4 +1,6 @@
 use std::ops::{Add, Mul};
+use crate::result;
+use crate::utils::ex;
 use crate::vector::Vector;
 
 impl <const S: usize, K: Add<Output = K> + Mul<Output = K> + Copy + Default> Vector<S, K> {
@@ -9,6 +11,15 @@ impl <const S: usize, K: Add<Output = K> + Mul<Output = K> + Copy + Default> Vec
         }
         acc
     }
+}
+
+pub fn ex03() {
+    ex(3, "Dot product");
+    result!(
+        Vector::from([0., 0.]).dot(&Vector::from([1., 1.])),
+        Vector::from([1., 1.]).dot(&Vector::from([1., 1.])),
+        Vector::from([-1., 6.]).dot(&Vector::from([3., 2.]))
+    );
 }
 
 #[cfg(test)]

@@ -1,6 +1,7 @@
 use std::ops::{Add, Div, Mul, Neg};
-use crate::matrix::Matrix;
-use crate::unit::Unit;
+use crate::matrix::{Mat3, Matrix};
+use crate::{result, show};
+use crate::utils::{ex, Unit};
 
 ///note: the examples given in the pdf expect the reduced form of row echelon, not the basic one
 ///otherwise the result of [[1,2],[3,4]] would be [[1,2],[0,-2]], not [[1,0],[0,1]]
@@ -52,6 +53,24 @@ impl <const C: usize, const R: usize, K: Default + PartialEq + Copy + Div<Output
         }
         out
     }
+}
+
+pub fn ex10() {
+    ex(10, "Row-echelon form");
+    result!(
+        Mat3::identity().row_echelon(),
+        Matrix::from([[1., 2.], [3., 4.]]).row_echelon(),
+        Matrix::from([[1., 2.], [2., 4.]]).row_echelon(),
+    );
+    let r0;
+    let r1;
+    let r2;
+    show!(
+        r0 = [8., 5., -2., 4., 28.],
+        r1 = [4., 2.5, 20., 4., -4.],
+        r2 = [8., 5., 1., 4., 17.]
+    );
+    result!(Matrix::from([r0, r1, r2]).row_echelon());
 }
 
 #[cfg(test)]

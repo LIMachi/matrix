@@ -1,6 +1,7 @@
 use std::ops::{Add, Div, Mul, Neg};
-use crate::matrix::Matrix;
-use crate::unit::Unit;
+use crate::matrix::{Mat3, Matrix};
+use crate::{result, show};
+use crate::utils::{ex, Unit};
 
 #[derive(Debug)]
 pub struct MatrixInverseError;
@@ -74,6 +75,25 @@ impl <const M: usize, K: Default + Copy + Unit + PartialEq + Div<Output = K> + N
             Err(MatrixInverseError)
         }
     }
+}
+
+pub fn ex12() {
+    ex(12, "Inverse");
+    result!(
+        Mat3::identity().inverse().unwrap(),
+        (Mat3::identity() * 2.).inverse().unwrap(),
+    );
+    let r;
+    let r0;
+    let r1;
+    let r2;
+    show!(
+        r0 = [8., 5., -2.],
+        r1 = [4., 7., 20.],
+        r2 = [7., 6., 1.],
+        r = Matrix::from([r0, r1, r2]).inverse().unwrap()
+    );
+    println!("{r:#?}");
 }
 
 #[cfg(test)]

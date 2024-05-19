@@ -1,5 +1,7 @@
 use std::ops::{Add, Div, Mul};
 use crate::exercises::ex04::Norm;
+use crate::result;
+use crate::utils::ex;
 use crate::vector::Vector;
 
 impl <const S: usize, K: Copy + Add<Output = K> + Mul<Output = K> + Div<Output = K> + Norm + Default + From<f32>> Vector<S, K> {
@@ -10,10 +12,21 @@ impl <const S: usize, K: Copy + Add<Output = K> + Mul<Output = K> + Div<Output =
     }
 }
 
+pub fn ex05() {
+    ex(5, "Cosine");
+    result!(
+        Vector::from([1., 0.]).angle_cos(&Vector::from([1., 0.])),
+        Vector::from([1., 0.]).angle_cos(&Vector::from([0., 1.])),
+        Vector::from([-1., 1.]).angle_cos(&Vector::from([1., -1.])),
+        Vector::from([2., 1.]).angle_cos(&Vector::from([4., 2.])),
+        Vector::from([1., 2., 3.]).angle_cos(&Vector::from([4., 5., 6.])),
+    );
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::assert_f32_eq;
     use crate::complex::Complex;
+    use crate::utils::assert_f32_eq;
     use super::*;
 
     #[test]

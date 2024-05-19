@@ -1,4 +1,6 @@
-use crate::matrix::Matrix;
+use crate::matrix::{Mat3, Matrix};
+use crate::result;
+use crate::utils::ex;
 
 impl <const C: usize, const R: usize, K: Copy + Default> Matrix<C, R, K> {
     pub fn transpose(&self) -> Matrix<R, C, K> {
@@ -10,6 +12,15 @@ impl <const C: usize, const R: usize, K: Copy + Default> Matrix<C, R, K> {
         }
         out
     }
+}
+
+pub fn ex09() {
+    ex(9, "Transpose");
+    result!(
+        Mat3::identity(),
+        Mat3::identity().transpose(),
+        Matrix::from([[4., 4.], [2., 8.]]).transpose()
+    );
 }
 
 #[cfg(test)]

@@ -1,6 +1,6 @@
 use std::fmt::{Debug, Display, Formatter};
 use crate::quaternion::Quaternion;
-use crate::unit::Unit;
+use crate::utils::Unit;
 use crate::vector::Vec3;
 
 impl Quaternion {
@@ -86,22 +86,26 @@ impl Quaternion {
 
 impl Display for Quaternion {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        fn plus(val: f32) -> &'static str {
+            if val >= 0. { "+" } else { "" }
+        }
+
         match (self.r == 0., self.i == 0., self.j == 0., self.k == 0.) {
             (_, true, true, true) => f.write_fmt(format_args!("{}", self.r)),
             (true, false, true, true) => f.write_fmt(format_args!("{}i", self.i)),
-            (false, false, true, true) => f.write_fmt(format_args!("{}+{}i", self.r, self.i)),
+            (false, false, true, true) => f.write_fmt(format_args!("{}{}{}i", self.r, plus(self.i), self.i)),
             (true, true, false, true) => f.write_fmt(format_args!("{}j", self.j)),
-            (false, true, false, true) => f.write_fmt(format_args!("{}+{}j", self.r, self.j)),
-            (false, false, false, true) => f.write_fmt(format_args!("{}+{}i+{}j", self.r, self.i, self.j)),
-            (true, true, false, false) => f.write_fmt(format_args!("{}j+{}k", self.j, self.k)),
+            (false, true, false, true) => f.write_fmt(format_args!("{}{}{}j", self.r, plus(self.j), self.j)),
+            (false, false, false, true) => f.write_fmt(format_args!("{}{}{}i{}{}j", self.r, plus(self.i), self.i, plus(self.j), self.j)),
+            (true, true, false, false) => f.write_fmt(format_args!("{}j{}{}k", self.j, plus(self.k), self.k)),
             (true, true, true, false) => f.write_fmt(format_args!("{}k", self.k)),
-            (false, true, true, false) => f.write_fmt(format_args!("{}+{}k", self.r, self.k)),
-            (false, false, true, false) => f.write_fmt(format_args!("{}+{}i+{}k", self.r, self.i, self.k)),
-            (false, false, false, false) => f.write_fmt(format_args!("{}+{}i+{}j+{}k", self.r, self.i, self.j, self.k)),
-            (true, false, false, false) => f.write_fmt(format_args!("{}i+{}j+{}k", self.i, self.j, self.k)),
-            (true, false, true, false) => f.write_fmt(format_args!("{}i+{}k", self.i, self.k)),
-            (true, false, false, true) => f.write_fmt(format_args!("{}i+{}j", self.i, self.j)),
-            (false, true, false, false) => f.write_fmt(format_args!("{}+{}j+{}k", self.r, self.j, self.k)),
+            (false, true, true, false) => f.write_fmt(format_args!("{}{}{}k", self.r, plus(self.k), self.k)),
+            (false, false, true, false) => f.write_fmt(format_args!("{}{}{}i{}{}k", self.r, plus(self.i), self.i, plus(self.k), self.k)),
+            (false, false, false, false) => f.write_fmt(format_args!("{}{}{}i{}{}j{}{}k", self.r, plus(self.i), self.i, plus(self.j), self.j, plus(self.k), self.k)),
+            (true, false, false, false) => f.write_fmt(format_args!("{}i{}{}j{}{}k", self.i, plus(self.j), self.j, plus(self.k), self.k)),
+            (true, false, true, false) => f.write_fmt(format_args!("{}i{}{}k", self.i, plus(self.k), self.k)),
+            (true, false, false, true) => f.write_fmt(format_args!("{}i{}{}j", self.i, plus(self.j), self.j)),
+            (false, true, false, false) => f.write_fmt(format_args!("{}{}{}j{}{}k", self.r, plus(self.j), self.j, plus(self.k), self.k)),
         }
     }
 }

@@ -3,4 +3,8 @@ name = "matrix"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+nigthly = [] # only use if the rust compiler is in nightly (will activate features rellying on generic const operations)
+std-sqrt = [] # replace the babylonian sqrt by the one available in the standard lib
+
 [dependencies]

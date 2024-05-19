@@ -1,5 +1,7 @@
 use std::ops::{Add, Mul, Sub};
 use crate::matrix::Matrix;
+use crate::{result, show};
+use crate::utils::ex;
 use crate::vector::Vector;
 
 ///instead of using the given prototypes (which use hold rust notation)
@@ -62,6 +64,31 @@ impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub for Matrix<
         }
         self
     }
+}
+
+pub fn ex00() {
+    ex(0, "Add, Subtract and Scale");
+
+    let mut u;
+    let v;
+
+    println!("vector operations:");
+    show!(
+        u = Vector::from([2., 3.]),
+        v = Vector::from([5., 7.])
+    );
+    result!(u + v, u - v, { u.scl(2.); u });
+    println!();
+
+    let mut u;
+    let v;
+
+    println!("matrix operations:");
+    show!(
+        u = Matrix::from([[1., 2.], [3., 4.]]),
+        v = Matrix::from([[7., 4.], [-2., 2.]])
+    );
+    result!(u + v, u - v, { u.scl(2.); u });
 }
 
 #[cfg(test)]

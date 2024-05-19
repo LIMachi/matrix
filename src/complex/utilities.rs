@@ -36,7 +36,7 @@ impl Display for Complex {
         } else if self.r == 0. {
             f.write_fmt(format_args!("{}i", self.i))
         } else {
-            f.write_fmt(format_args!("{}+{}i", self.r, self.i))
+            f.write_fmt(format_args!("{}{}{}i", self.r, if self.i >= 0. { "+" } else { "" }, self.i))
         }
     }
 }

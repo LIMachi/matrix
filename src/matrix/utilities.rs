@@ -1,6 +1,6 @@
 use std::fmt::{Debug, Display, Formatter};
 use super::Matrix;
-use crate::unit::Unit;
+use crate::utils::Unit;
 use crate::vector::Vector;
 
 impl <const C: usize, const R: usize, K> Matrix<C, R, K> {
@@ -51,19 +51,19 @@ impl <const C: usize, const R: usize, K: Debug> Debug for Matrix<C, R, K> {
 
 impl <const C: usize, const R: usize, K: Display> Display for Matrix<C, R, K> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        f.write_str("Matrix: [\n")?;
+        f.write_str("[")?;
         for r in 0..R - 1 {
-            f.write_str("\t")?;
+            f.write_str("[")?;
             for c in 0..C - 1 {
                 f.write_fmt(format_args!("{}, ", self.0[r][c]))?;
             }
-            f.write_fmt(format_args!("{},\n", self.0[r][C - 1]))?;
+            f.write_fmt(format_args!("{}], ", self.0[r][C - 1]))?;
         }
-        f.write_str("\t")?;
+        f.write_str("[")?;
         for c in 0..C - 1 {
             f.write_fmt(format_args!("{}, ", self.0[R - 1][c]))?;
         }
-        f.write_fmt(format_args!("{}\n]\n", self.0[R - 1][C - 1]))
+        f.write_fmt(format_args!("{}]]", self.0[R - 1][C - 1]))
     }
 }
 

@@ -1,4 +1,6 @@
 use crate::complex::Complex;
+use crate::{result, show};
+use crate::utils::ex;
 use crate::vector::Vector;
 
 ///note: the subject requires self to be mutable, but by definition, the norm of a vector does not require transformation, so I removed the superfluous mut
@@ -7,6 +9,8 @@ use crate::vector::Vector;
 
 ///since sqrt is not allowed, I had to redo it
 ///https://blogs.sas.com/content/iml/2016/05/16/babylonian-square-roots.html
+
+#[cfg(not(feature = "std-sqrt"))]
 pub fn babylonian_sqrt(val: f32) -> f32 {
     if val <= 0. {
         0. //handles negative numbers as 0 (should result in an error or complex number to be exact)
@@ -24,6 +28,12 @@ pub fn babylonian_sqrt(val: f32) -> f32 {
         }
         mean
     }
+}
+
+#[cfg(feature = "std-sqrt")]
+#[inline]
+pub fn babylonian_sqrt(val: f32) -> f32 {
+    val.sqrt()
 }
 
 pub trait Norm {
@@ -89,6 +99,18 @@ impl <const S: usize, K: Norm> Norm for Vector<S, K> {
         }
         acc
     }
+}
+
+pub fn ex04() {
+    ex(4, "Norm");
+    let mut u;
+    show!(u = Vector::from([0., 0., 0.]));
+    result!(u.norm_1(), u.norm(), u.norm_inf());
+    show!(u = Vector::from([1., 2., 3.]));
+    result!(u.norm_1(), u.norm(), u.norm_inf());
+    let u;
+    show!(u = Vector::from([-1., -2.]));
+    result!(u.norm_1(), u.norm(), u.norm_inf());
 }
 
 #[cfg(test)]

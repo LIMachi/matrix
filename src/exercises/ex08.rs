@@ -1,5 +1,7 @@
 use std::ops::Add;
 use crate::matrix::Matrix;
+use crate::result;
+use crate::utils::ex;
 
 impl <const M: usize, K: Add<Output = K> + Default + Copy> Matrix<M, M, K> {
     pub fn trace(&self) -> K {
@@ -9,6 +11,15 @@ impl <const M: usize, K: Add<Output = K> + Default + Copy> Matrix<M, M, K> {
         }
         trace
     }
+}
+
+pub fn ex08() {
+    ex(8, "Trace");
+    result!(
+        Matrix::from([[1., 0.], [0., 1.]]).trace(),
+        Matrix::from([[2., -5., 0.], [4., 3., 7.], [-2., 3., 4.]]).trace(),
+        Matrix::from([[-2., -8., 4.], [1., -23., 4.], [0., 6., 4.]]).trace(),
+    );
 }
 
 #[cfg(test)]

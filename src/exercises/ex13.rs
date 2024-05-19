@@ -1,6 +1,7 @@
 use std::ops::{Add, Div, Mul, Neg};
-use crate::matrix::Matrix;
-use crate::unit::Unit;
+use crate::matrix::{Mat3, Matrix};
+use crate::{result, show};
+use crate::utils::{ex, Unit};
 use crate::vector::Vector;
 
 //https://en.wikipedia.org/wiki/Rank_(linear_algebra)
@@ -29,6 +30,25 @@ impl <const C: usize, const R: usize, K: Default + PartialEq + Copy + Div<Output
         }
         count
     }
+}
+
+pub fn ex13() {
+    ex(13, "Rank");
+    result!(
+        Mat3::identity().rank(),
+        Matrix::from([[1., 2., 0., 0.], [2., 4., 0., 0.], [-1., 2., 1., 1.]]).rank(),
+    );
+    let r0;
+    let r1;
+    let r2;
+    let r3;
+    show!(
+        r0 = [8., 5., -2.],
+        r1 = [4., 7., 20.],
+        r2 = [7., 6., 1.],
+        r3 = [21., 18., 7.]
+    );
+    result!(Matrix::from([r0, r1, r2, r3]).rank());
 }
 
 #[cfg(test)]

@@ -33,7 +33,7 @@ Completion:
 - [x] ex12 inverse
 - [x] ex13 rank
 - [x] ex14 projection
-- [ ] ex15 complex vector spaces
+- [x] ex15 complex vector spaces
 
 Testing:
 `cargo test`
