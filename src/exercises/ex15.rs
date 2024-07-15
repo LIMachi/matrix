@@ -56,7 +56,15 @@ pub fn ex15() {
     result!(Vector::from([c10, c00, c01]).cross_product(&Vector::from([c00, c00, c01])));
     println!("\n-- 07 Linear map, matrix multiplication");
     let cm;
-    show!(cm = Matrix::from([[c01, c10, c00], [c42, c00, c19], [c00, c42, Complex::from_i(41.)]]));
+    let r0;
+    let r1;
+    let r2;
+    show!(
+        r0 = [c01, c10, c00],
+        r1 = [c42, c00, c19],
+        r2 = [c00, c42, Complex::from_i(41.)],
+        cm = Matrix::from([r0, r1, r2]),
+    );
     result!(
         cm * Vector::from([c00, c10, c01]),
         cm * cm

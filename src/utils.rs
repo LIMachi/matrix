@@ -85,18 +85,18 @@ pub fn assert_f64_eq(left: f64, right: f64) {
     assert!(lb >= right && ll <= right, "left [{ll} {lb}] != {right}");
 }
 
-///simplified version of dbg (does not show file/line, use display instead of debug)
+///simplified version of dbg (does not show file/line, use display instead of debug, print the stringified block before executing it)
 #[macro_export]
 macro_rules! result {
     () => {
         println!()
     };
     ($val:expr $(,)?) => {
-        match $val {
-            tmp => {
-                println!("{} = {}", stringify!($val), &tmp);
-                tmp
-            }
+        {
+            print!("{} = ", stringify!($val));
+            let tmp = { $val };
+            println!("{}", &tmp);
+            tmp
         }
     };
     ($($val:expr),+ $(,)?) => {
@@ -104,15 +104,13 @@ macro_rules! result {
     }
 }
 
-///debug even more simplified: show the expression (and execute it) without the result
+///like result but even more simplified: show the expression (and execute it) without showing the result
 #[macro_export]
 macro_rules! show {
     ($val:expr $(,)?) => {
-        match $val {
-            tmp => {
-                println!("{}", stringify!($val));
-                tmp
-            }
+        {
+            println!("{}", stringify!($val));
+            $val
         }
     };
     ($($val:expr),+ $(,)?) => {

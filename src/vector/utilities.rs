@@ -1,5 +1,6 @@
 use std::fmt::{Debug, Display, Formatter};
 use std::ops::{Add, Div, Index, Mul};
+use crate::exercises::ex04::babylonian_sqrt;
 use crate::utils::Unit;
 use super::Vector;
 
@@ -44,17 +45,6 @@ impl <const S: usize, K: Copy + Default> Vector<S, K> {
             out[l] = self[indexes[l]];
         }
         out
-    }
-}
-
-impl <const S: usize, K: Copy + Default + Unit + PartialEq + Add<Output = K> + Mul<Output = K> + Div<Output = K>> Vector<S, K> {
-    pub fn normalize(&self) -> Self {
-        let l = self.dot(&self);
-        if l != K::unit() && l != K::default() {
-            *self / l
-        } else {
-            *self
-        }
     }
 }
 
