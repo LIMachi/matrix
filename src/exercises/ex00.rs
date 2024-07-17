@@ -1,8 +1,6 @@
-use std::ops::{Add, Mul, Sub};
-use crate::matrix::Matrix;
-use crate::{result, show};
-use crate::utils::ex;
-use crate::vector::Vector;
+use std::ops::Mul;
+use utils::{result, show, ex};
+use maths::prelude::{Vector, Matrix};
 
 ///instead of using the given prototypes (which use hold rust notation)
 ///I opted to implement add and sub as actual operator overloads
@@ -15,54 +13,6 @@ pub trait Ex00scl<K: Copy>: Mul<K, Output = Self> + Copy {
 impl <K: Copy, T: Mul<K, Output = T> + Copy> Ex00scl<K> for T {
     fn scl(&mut self, scalar: K) {
         *self = *self * scalar
-    }
-}
-
-impl <const S: usize, K: Add<Output = K> + Copy> Add for Vector<S, K> {
-    type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
-        for i in 0..S {
-            self[i] = self[i] + rhs[i];
-        }
-        self
-    }
-}
-
-impl <const S: usize, K: Sub<Output = K> + Copy> Sub for Vector<S, K> {
-    type Output = Self;
-
-    fn sub(mut self, rhs: Self) -> Self::Output {
-        for i in 0..S {
-            self[i] = self[i] - rhs[i];
-        }
-        self
-    }
-}
-
-impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add for Matrix<C, R, K> {
-    type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
-        for r in 0..R {
-            for c in 0..C {
-                self[(c, r)] = self[(c, r)] + rhs[(c, r)];
-            }
-        }
-        self
-    }
-}
-
-impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub for Matrix<C, R, K> {
-    type Output = Self;
-
-    fn sub(mut self, rhs: Self) -> Self::Output {
-        for r in 0..R {
-            for c in 0..C {
-                self[(c, r)] = self[(c, r)] - rhs[(c, r)];
-            }
-        }
-        self
     }
 }
 
@@ -93,8 +43,8 @@ pub fn ex00() {
 
 #[cfg(test)]
 mod tests {
-    use crate::vector::Vector;
-    use crate::matrix::Matrix;
+    use maths::prelude::{Vector, Matrix};
+
     use super::Ex00scl;
 
     #[test]

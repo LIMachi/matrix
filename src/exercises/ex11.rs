@@ -1,7 +1,5 @@
-use std::ops::{Add, Mul, Sub};
-use crate::matrix::{Mat3, Matrix};
-use crate::{result, show};
-use crate::utils::ex;
+use maths::matrix::{Mat3, Matrix};
+use utils::{result, show, ex};
 
 //https://en.wikipedia.org/wiki/Determinant
 //https://www.youtube.com/watch?v=Ip3X9LOh2dk&list=PL0-GT3co4r2y2YErbmuJw2L5tW4Ew2O5B&index=7
@@ -17,59 +15,6 @@ use crate::utils::ex;
 
 //det 0 means that all vectors inside the space will now be collinear in 2d or on the same plane in 3d (and more generally, means that one dimension was lost)
 //if the matrix represents the 2d space xy, but we rotate it in 3d space around the x or y axis by 90 degrees, then we end up with the y or x axis swapped with the z axis and we end up with a line from the 2d view xy
-
-impl <K: Copy> Matrix<1, 1, K> {
-    pub fn determinant(&self) -> K {
-        self.0[0][0]
-    }
-}
-
-impl <K: Copy + Mul<Output = K> + Sub<Output = K>> Matrix<2, 2, K> {
-    pub fn determinant(&self) -> K {
-        self.0[0][0] * self.0[1][1] - self.0[1][0] * self.0[0][1]
-    }
-}
-
-impl <K: Copy + Mul<Output = K> + Sub<Output = K> + Add<Output = K>> Matrix<3, 3, K> {
-    pub fn determinant(&self) -> K {
-        self.0[0][0] * self.0[1][1] * self.0[2][2]
-            + self.0[0][1] * self.0[1][2] * self.0[2][0]
-            + self.0[0][2] * self.0[1][0] * self.0[2][1]
-            - self.0[0][2] * self.0[1][1] * self.0[2][0]
-            - self.0[0][1] * self.0[1][0] * self.0[2][2]
-            - self.0[0][0] * self.0[1][2] * self.0[2][1]
-    }
-}
-
-//call me crazy, but I think I can do it using 0 iterations :P
-impl <K: Copy + Mul<Output = K> + Sub<Output = K> + Add<Output = K>> Matrix<4, 4, K> {
-    pub fn determinant(&self) -> K {
-            self.0[0][0] * self.0[1][1] * self.0[2][2] * self.0[3][3]
-                + self.0[0][0] * self.0[2][1] * self.0[3][2] * self.0[1][3]
-                + self.0[0][0] * self.0[3][1] * self.0[1][2] * self.0[2][3]
-                - self.0[0][0] * self.0[3][1] * self.0[2][2] * self.0[1][3]
-                - self.0[0][0] * self.0[2][1] * self.0[1][2] * self.0[3][3]
-                - self.0[0][0] * self.0[1][1] * self.0[3][2] * self.0[2][3]
-                - self.0[1][0] * self.0[0][1] * self.0[2][2] * self.0[3][3]
-                - self.0[2][0] * self.0[0][1] * self.0[3][2] * self.0[1][3]
-                - self.0[3][0] * self.0[0][1] * self.0[1][2] * self.0[2][3]
-                + self.0[3][0] * self.0[0][1] * self.0[2][2] * self.0[1][3]
-                + self.0[2][0] * self.0[0][1] * self.0[1][2] * self.0[3][3]
-                + self.0[1][0] * self.0[0][1] * self.0[3][2] * self.0[2][3]
-                + self.0[1][0] * self.0[2][1] * self.0[0][2] * self.0[3][3]
-                + self.0[2][0] * self.0[3][1] * self.0[0][2] * self.0[1][3]
-                + self.0[3][0] * self.0[1][1] * self.0[0][2] * self.0[2][3]
-                - self.0[3][0] * self.0[2][1] * self.0[0][2] * self.0[1][3]
-                - self.0[2][0] * self.0[1][1] * self.0[0][2] * self.0[3][3]
-                - self.0[1][0] * self.0[3][1] * self.0[0][2] * self.0[2][3]
-                - self.0[1][0] * self.0[2][1] * self.0[3][2] * self.0[0][3]
-                - self.0[2][0] * self.0[3][1] * self.0[1][2] * self.0[0][3]
-                - self.0[3][0] * self.0[1][1] * self.0[2][2] * self.0[0][3]
-                + self.0[3][0] * self.0[2][1] * self.0[1][2] * self.0[0][3]
-                + self.0[2][0] * self.0[1][1] * self.0[3][2] * self.0[0][3]
-                + self.0[1][0] * self.0[3][1] * self.0[2][2] * self.0[0][3]
-    }
-}
 
 pub fn ex11() {
     ex(11, "Determinant");

@@ -1,7 +1,8 @@
 use std::fs::File;
 use std::io::Write;
-use crate::matrix::Matrix;
-use crate::utils::ex;
+use std::f32;
+use maths::matrix::Matrix;
+use utils::ex;
 
 //TODO: test on a linux or mac with vulkan (as the executable given by 42 uses vulkan and crashes on virtual machines due to vulkan not being available)
 pub fn projection(fov: f32, ratio: f32, near: f32, far: f32) -> Matrix<4, 4, f32> {
@@ -22,10 +23,10 @@ pub fn ex14() {
     for r in 0..4 {
         for c in 0..3 {
             let v = p[(c, r)];
-            file.write_fmt(format_args!("{v}{}, ", if v.fract().abs() <= f32::EPSILON { "." } else { "" })).unwrap();
+            file.write_fmt(format_args!("{v}{}, ", if v.fract().abs() <= std::f32::EPSILON { "." } else { "" })).unwrap();
         }
         let v = p[(3, r)];
-        file.write_fmt(format_args!("{v}{}\n", if v.fract().abs() <= f32::EPSILON { "." } else { "" })).unwrap();
+        file.write_fmt(format_args!("{v}{}\n", if v.fract().abs() <= std::f32::EPSILON { "." } else { "" })).unwrap();
     }
     println!("generated file './proj', now use ./matrix_display_linux/display or ./matrix_display_mac/display (test executable provided by 42 for corrections)");
 }

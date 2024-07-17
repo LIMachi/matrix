@@ -1,12 +1,29 @@
 use std::fmt::{Debug, Display, Formatter};
-use std::ops::{Add, Div, Index, Mul};
-use crate::exercises::ex04::babylonian_sqrt;
-use crate::utils::Unit;
-use super::Vector;
+use std::ops::Index;
+use crate::prelude::{Vector, DynVec};
+use crate::utils::Norm;
 
 impl <const S: usize, K: Default + Copy> Default for Vector<S, K> {
     fn default() -> Self {
         Self([K::default(); S])
+    }
+}
+
+impl <K: Clone> Clone for DynVec<K> {
+    fn clone(&self) -> Self {
+        Self(self.0.clone())
+    }
+}
+
+impl <K: Default> DynVec<K> {
+    pub fn with_size(size: usize) -> Self {
+        Self({
+            let mut t = Vec::with_capacity(size);
+            for _ in 0..size {
+                t.push(K::default());
+            }
+            t
+        })
     }
 }
 
@@ -45,6 +62,12 @@ impl <const S: usize, K: Copy + Default> Vector<S, K> {
             out[l] = self[indexes[l]];
         }
         out
+    }
+}
+
+impl <const S: usize> Vector<S, f32> {
+    pub fn normalize(&self) -> Self {
+        *self * 1. / self.norm()
     }
 }
 

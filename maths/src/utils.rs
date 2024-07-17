@@ -1,3 +1,5 @@
+use std::ops::{Add, Mul};
+
 use crate::complex::Complex;
 use crate::quaternion::Quaternion;
 
@@ -6,6 +8,27 @@ use crate::quaternion::Quaternion;
 ///still waiting for const trait functions :)
 pub trait Unit {
     fn unit() -> Self;
+}
+
+pub trait Norm {
+    fn norm_1(&self) -> f32;
+    fn norm(&self) -> f32;
+    fn norm_inf(&self) -> f32;
+}
+
+///for any type that can be represented as a single real, the length/norm is always abs of self
+impl <T: Copy + Into<f32>> Norm for T where f32: From<T> {
+    fn norm_1(&self) -> f32 {
+        f32::from(*self).abs()
+    }
+
+    fn norm(&self) -> f32 {
+        f32::from(*self).abs()
+    }
+
+    fn norm_inf(&self) -> f32 {
+        f32::from(*self).abs()
+    }
 }
 
 impl Unit for f32 { fn unit() -> Self { 1. } }
@@ -43,14 +66,53 @@ impl Unit for Quaternion {
 
 //value=positive normalized number (not nan, inf, denormalized or <0) -> 1/sqrt(value)
 //derived from formula seen there: https://www.youtube.com/watch?v=p8u_k2LIZyo
-#[allow(dead_code)]
-fn quake_rsqrt(value: f32) -> f32 {
+pub fn quake_rsqrt(value: f32) -> f32 {
     //in rust, direct conversion of ref to pointer of different type is not allowed, so I do a temporary cast to an intermediary pointer before casting it to the final pointer
     //in terms of safety: there is none, if the input value is not normal (ex: infinity, NaN or other degenerate forms) this will most likely result in NaN/Infinity
     //if value is < 0, it will result in an underflow (in release mode, it will usually result in -Inf)
     let mut y = unsafe { *(&(0x5f3759df - (*(&value as *const f32 as *const u32) >> 1)) as *const u32 as *const f32) };
     y = y * (1.5 - value * 0.5 * y * y);
     y * (1.5 - value * 0.5 * y * y)
+}
+
+///since sqrt is not allowed, I had to redo it
+///https://blogs.sas.com/content/iml/2016/05/16/babylonian-square-roots.html
+
+#[cfg(not(feature = "std-sqrt"))]
+pub fn babylonian_sqrt(val: f32) -> f32 {
+    if val <= 0. {
+        0. //handles negative numbers as 0 (should result in an error or complex number to be exact)
+    } else if val == 1. {
+        1.
+    } else {
+        let mut mean = (val + 1.) / 2.;
+        for _ in 0..8 { //use 8 iterations by default (since f32 has a maximal exponent of 7 bits, I use one more to be extra cautious)
+            let estimate = val / mean;
+            mean = (mean + estimate) / 2.;
+            let t = mean * mean;
+            if t + f32::EPSILON > val && t - f32::EPSILON < val {
+                break; //if we are close enough (in f32 error range), stop the guessing early
+            }
+        }
+        mean
+    }
+}
+
+#[cfg(feature = "std-sqrt")]
+#[inline]
+pub fn babylonian_sqrt(val: f32) -> f32 {
+    val.sqrt()
+}
+
+pub trait Lerp {
+    ///I decided to make this function a method of any type that implement the correct operations
+    fn lerp(&self, v: Self, t: f32) -> Self;
+}
+
+impl <T: Add<Output = T> + Mul<f32, Output = T> + Copy> Lerp for T {
+    fn lerp(&self, v: Self, t: f32) -> Self {
+        *self * (1. - t) + v * t
+    }
 }
 
 #[test]
@@ -70,57 +132,4 @@ fn test_quake_rsqrt() {
         dbg!(quake_rsqrt(-1.)); //-inf
         dbg!(quake_rsqrt(f32::NEG_INFINITY)); //-inf
     }
-}
-
-///since I use approximations of sqrt and other simplification, I allow myself an error of 1 epsilon ~10^-7
-pub fn assert_f32_eq(left: f32, right: f32) {
-    let lb = left + f32::EPSILON;
-    let ll = left - f32::EPSILON;
-    assert!(lb >= right && ll <= right, "[{ll} {lb}] != {right}");
-}
-
-pub fn assert_f64_eq(left: f64, right: f64) {
-    let lb = left + f64::EPSILON;
-    let ll = left - f64::EPSILON;
-    assert!(lb >= right && ll <= right, "left [{ll} {lb}] != {right}");
-}
-
-///simplified version of dbg (does not show file/line, use display instead of debug, print the stringified block before executing it)
-#[macro_export]
-macro_rules! result {
-    () => {
-        println!()
-    };
-    ($val:expr $(,)?) => {
-        {
-            print!("{} = ", stringify!($val));
-            let tmp = { $val };
-            println!("{}", &tmp);
-            tmp
-        }
-    };
-    ($($val:expr),+ $(,)?) => {
-        ($(result!($val)),+,)
-    }
-}
-
-///like result but even more simplified: show the expression (and execute it) without showing the result
-#[macro_export]
-macro_rules! show {
-    ($val:expr $(,)?) => {
-        {
-            println!("{}", stringify!($val));
-            $val
-        }
-    };
-    ($($val:expr),+ $(,)?) => {
-        ($(show!($val)),+,)
-    };
-}
-
-pub fn ex(number: usize, title: &str) {
-    let l = title.chars().count() as i32;
-    let ll = ((63 - l) / 2).max(0);
-    let lr = (63 - l - ll).max(0);
-    println!("\n{} exercise {number:02}: '{title:.63}' {}", "*".repeat(ll as usize), "*".repeat(lr as usize));
 }

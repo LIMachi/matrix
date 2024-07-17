@@ -1,11 +1,19 @@
-pub mod vector;
-pub mod matrix;
-pub mod exercises;
-pub mod complex;
-pub mod quaternion;
-pub mod utils;
+mod exercises;
 
 use exercises::*;
+
+///since I use approximations of sqrt and other simplification, I allow myself an error of 1 epsilon ~10^-7
+pub fn assert_f32_eq(left: f32, right: f32) {
+    let lb = left + std::f32::EPSILON;
+    let ll = left - std::f32::EPSILON;
+    assert!(lb >= right && ll <= right, "[{ll} {lb}] != {right}");
+}
+
+pub fn assert_f64_eq(left: f64, right: f64) {
+    let lb = left + std::f64::EPSILON;
+    let ll = left - std::f64::EPSILON;
+    assert!(lb >= right && ll <= right, "left [{ll} {lb}] != {right}");
+}
 
 fn main() {
     ex00();

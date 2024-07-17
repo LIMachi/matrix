@@ -8,3 +8,5 @@ nigthly = [] # only use if the rust compiler is in nightly (will activate featur
 std-sqrt = [] # replace the babylonian sqrt by the one available in the standard lib
 
 [dependencies]
+maths = { path = "maths" }
+utils = { path = "utils" }

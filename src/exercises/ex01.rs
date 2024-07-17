@@ -1,7 +1,6 @@
 use std::ops::{Add, Mul};
-use crate::{result, show};
-use crate::utils::ex;
-use crate::vector::Vector;
+use utils::{result, show, ex};
+use maths::prelude::Vector;
 
 ///since newer versions of rust allow the use of const generic (generics that represent values instead of types),
 ///we can write methods that check at compile time that the parameters are of correct size

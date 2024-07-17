@@ -1,8 +1,5 @@
-use std::ops::{Add, Div, Mul, Neg};
-use crate::matrix::{Mat3, Matrix};
-use crate::{result, show};
-use crate::utils::{ex, Unit};
-use crate::vector::Vector;
+use maths::matrix::{Mat3, Matrix};
+use utils::{result, show, ex};
 
 //https://en.wikipedia.org/wiki/Rank_(linear_algebra)
 //https://www.youtube.com/watch?v=uQhTuRlWMxw&list=PL0-GT3co4r2y2YErbmuJw2L5tW4Ew2O5B&index=8
@@ -17,20 +14,6 @@ use crate::vector::Vector;
 //this also means that there is only 1 solution to x in that case, and the rank can be interpreted as the number of solvable variables x/y/z with a singular solution
 //to calculate the independent columns, we do a transformation to row echelon form, and in this form row and columns independence is equivalent (see visual result using transpose of row echelon form)
 //and just add the number of rows that are non-null
-
-impl <const C: usize, const R: usize, K: Default + PartialEq + Copy + Div<Output = K> + Neg<Output = K> + Mul<Output = K> + Add<Output = K> + Unit> Matrix<C, R, K> {
-    pub fn rank(&self) -> usize {
-        let rref = self.row_echelon();
-        let cmp = Vector::<C, K>::default();
-        let mut count = 0;
-        for r in 0..R {
-            if rref[r] != cmp {
-                count += 1;
-            }
-        }
-        count
-    }
-}
 
 pub fn ex13() {
     ex(13, "Rank");
@@ -53,7 +36,6 @@ pub fn ex13() {
 
 #[cfg(test)]
 mod tests {
-    use crate::matrix::Mat3;
     use super::*;
 
     #[test]

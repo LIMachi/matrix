@@ -1,19 +1,5 @@
-use std::ops::{Add, Mul};
-use crate::{result, show};
-use crate::matrix::Matrix;
-use crate::utils::ex;
-use crate::vector::Vector;
-
-pub trait Lerp {
-    ///I decided to make this function a method of any type that implement the correct operations
-    fn lerp(&self, v: Self, t: f32) -> Self;
-}
-
-impl <T: Add<Output = T> + Mul<f32, Output = T> + Copy> Lerp for T {
-    fn lerp(&self, v: Self, t: f32) -> Self {
-        *self * (1. - t) + v * t
-    }
-}
+use maths::prelude::{Vector, Matrix, Lerp};
+use utils::{result, show, ex};
 
 pub fn ex02() {
     ex(2, "Linear interpolation");
@@ -33,8 +19,7 @@ pub fn ex02() {
 #[cfg(test)]
 mod tests {
     use super::Lerp;
-    use crate::matrix::Matrix;
-    use crate::vector::Vector;
+    use maths::prelude::{Vector, Matrix};
 
     #[test]
     fn test_0_lerp_f32() {

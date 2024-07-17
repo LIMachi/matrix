@@ -1,11 +1,8 @@
-use crate::{result, show};
-use crate::complex::Complex;
+use maths::utils::Lerp;
+use maths::prelude::{Norm, Matrix, Vector};
+use utils::{result, show, ex};
+use maths::complex::Complex;
 use crate::exercises::ex01::linear_combination;
-use crate::exercises::ex02::Lerp;
-use crate::exercises::ex04::Norm;
-use crate::matrix::Matrix;
-use crate::utils::ex;
-use crate::vector::Vector;
 
 pub fn ex15() {
     ex(15, "Complex vector spaces");

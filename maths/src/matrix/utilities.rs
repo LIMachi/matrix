@@ -1,7 +1,8 @@
 use std::fmt::{Debug, Display, Formatter};
-use super::Matrix;
+use std::usize;
+use super::{DynMat, Matrix};
 use crate::utils::Unit;
-use crate::vector::Vector;
+use crate::vector::{DynVec, Vector};
 
 impl <const C: usize, const R: usize, K> Matrix<C, R, K> {
 
@@ -26,6 +27,10 @@ impl <const C: usize, const R: usize, K> Matrix<C, R, K> {
     }
 }
 
+impl <K> DynMat<K> {
+    
+}
+
 impl <const M: usize, K: Default + Copy + Unit> Matrix<M, M, K> {
     pub fn identity() -> Self {
         let mut out = Self::default();
@@ -40,6 +45,18 @@ impl <const M: usize, K: Default + Copy + Unit> Matrix<M, M, K> {
 impl <const C: usize, const R: usize, K: Default + Copy> Default for Matrix<C, R, K> {
     fn default() -> Self {
         Self(Vector::default())
+    }
+}
+
+impl <K: Default + Copy> DynMat<K> {
+    pub fn with_size(columns: usize, rows: usize) -> Self {
+        let col = DynVec::with_size(rows);
+        let mut v = Vec::with_capacity(columns);
+        for _ in 0..columns - 1 {
+            v.push(col.clone());
+        }
+        v.push(col);
+        Self(DynVec::from(v))
     }
 }
 

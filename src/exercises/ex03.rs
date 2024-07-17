@@ -1,17 +1,5 @@
-use std::ops::{Add, Mul};
-use crate::result;
-use crate::utils::ex;
-use crate::vector::Vector;
-
-impl <const S: usize, K: Add<Output = K> + Mul<Output = K> + Copy + Default> Vector<S, K> {
-    pub fn dot(&self, other: &Self) -> K {
-        let mut acc = K::default();
-        for i in 0..S {
-            acc = acc + self[i] * other[i];
-        }
-        acc
-    }
-}
+use utils::{result, ex};
+use maths::prelude::Vector;
 
 pub fn ex03() {
     ex(3, "Dot product");

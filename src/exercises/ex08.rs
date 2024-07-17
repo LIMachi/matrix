@@ -1,17 +1,5 @@
-use std::ops::Add;
-use crate::matrix::Matrix;
-use crate::result;
-use crate::utils::ex;
-
-impl <const M: usize, K: Add<Output = K> + Default + Copy> Matrix<M, M, K> {
-    pub fn trace(&self) -> K {
-        let mut trace = K::default();
-        for i in 0..M {
-            trace = trace + self[(i, i)];
-        }
-        trace
-    }
-}
+use maths::prelude::Matrix;
+use utils::{result, ex};
 
 pub fn ex08() {
     ex(8, "Trace");

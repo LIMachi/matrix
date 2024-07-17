@@ -1,16 +1,5 @@
-use std::ops::{Add, Div, Mul};
-use crate::exercises::ex04::Norm;
-use crate::result;
-use crate::utils::ex;
-use crate::vector::Vector;
-
-impl <const S: usize, K: Copy + Add<Output = K> + Mul<Output = K> + Div<Output = K> + Norm + Default + From<f32>> Vector<S, K> {
-    ///I decided to make this function a method of Vector
-    ///also, I made the type of return value K (since the angle might not be real with vectors of complex numbers)
-    pub fn angle_cos(&self, v: &Self) -> K {
-        self.dot(v) / K::from(self.norm() * v.norm())
-    }
-}
+use utils::{result, ex};
+use maths::prelude::Vector;
 
 pub fn ex05() {
     ex(5, "Cosine");
@@ -25,8 +14,8 @@ pub fn ex05() {
 
 #[cfg(test)]
 mod tests {
-    use crate::complex::Complex;
-    use crate::utils::assert_f32_eq;
+    use maths::complex::Complex;
+    use crate::assert_f32_eq;
     use super::*;
 
     #[test]
