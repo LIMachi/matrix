@@ -1,7 +1,7 @@
 #![cfg_attr(nightly, feature(generic_const_exprs))]
 
 use crate::vector::Vector;
-use super::Matrix;
+use super::{Mat4, Matrix};
 
 impl <const C: usize, const R: usize, K: Default + Copy> From<[[K; C]; R]> for Matrix<C, R, K> {
     fn from(value: [[K; C]; R]) -> Self {
@@ -21,6 +21,18 @@ impl <const C: usize, const R: usize, K: Default + Copy> From<Matrix<C, R, K>> f
         for c in 0..C {
             for r in 0..R {
                 out[r + c * R] = value[(c, r)];
+            }
+        }
+        out
+    }
+}
+
+impl <K: Default + Copy> From<Matrix<4, 4, K>> for [K; 16] {
+    fn from(value: Matrix<4, 4, K>) -> Self {
+        let mut out = [K::default(); 16];
+        for c in 0..4 {
+            for r in 0..4 {
+                out[r + c * 4] = value[(c, r)];
             }
         }
         out

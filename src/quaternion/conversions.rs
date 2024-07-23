@@ -3,6 +3,7 @@ use crate::matrix::Mat4;
 use crate::utils::Unit;
 use crate::vector::{Vec3, Vec4};
 use super::Quaternion;
+use crate::exercises::ex03::Ex03dot;
 
 #[derive(Debug)]
 pub enum QuaternionError {

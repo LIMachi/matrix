@@ -49,15 +49,35 @@ impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<K> for Matr
     }
 }
 
-impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<Vector<C, K>> for Matrix<C, R, K> {
+impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add for Matrix<C, R, K> {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self::Output { self + &rhs }
+}
+
+impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add for &Matrix<C, R, K> {
+    type Output = Matrix<C, R, K>;
+    fn add(self, rhs: Self) -> Self::Output { *self + rhs }
+}
+
+impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<Matrix<C, R, K>> for &Matrix<C, R, K> {
+    type Output = Matrix<C, R, K>;
+    fn add(self, rhs: Matrix<C, R, K>) -> Self::Output { *self + &rhs }
+}
+
+impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<&Vector<C, K>> for Matrix<C, R, K> {
     type Output = Self;
 
-    fn add(mut self, rhs: Vector<C, K>) -> Self::Output {
+    fn add(mut self, rhs: &Vector<C, K>) -> Self::Output {
         for r in 0..R {
             self[r] = self[r] + rhs;
         }
         self
     }
+}
+
+impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<Vector<C, K>> for Matrix<C, R, K> {
+    type Output = Self;
+    fn add(self, rhs: Vector<C, K>) -> Self::Output { self + &rhs }
 }
 
 impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<K> for Matrix<C, R, K> {
@@ -73,15 +93,35 @@ impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<K> for Matr
     }
 }
 
-impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<Vector<C, K>> for Matrix<C, R, K> {
+impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub for Matrix<C, R, K> {
+    type Output = Self;
+    fn sub(self, rhs: Self) -> Self::Output { self - &rhs }
+}
+
+impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub for &Matrix<C, R, K> {
+    type Output = Matrix<C, R, K>;
+    fn sub(self, rhs: Self) -> Self::Output { *self - rhs }
+}
+
+impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<Matrix<C, R, K>> for &Matrix<C, R, K> {
+    type Output = Matrix<C, R, K>;
+    fn sub(self, rhs: Matrix<C, R, K>) -> Self::Output { *self - &rhs }
+}
+
+impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<&Vector<C, K>> for Matrix<C, R, K> {
     type Output = Self;
 
-    fn sub(mut self, rhs: Vector<C, K>) -> Self::Output {
+    fn sub(mut self, rhs: &Vector<C, K>) -> Self::Output {
         for r in 0..R {
             self[r] = self[r] - rhs;
         }
         self
     }
+}
+
+impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<Vector<C, K>> for Matrix<C, R, K> {
+    type Output = Self;
+    fn sub(self, rhs: Vector<C, K>) -> Self::Output { self - &rhs }
 }
 
 impl <const C: usize, const R: usize, K: Mul<Output = K> + Copy> Mul<K> for Matrix<C, R, K> {
@@ -95,6 +135,36 @@ impl <const C: usize, const R: usize, K: Mul<Output = K> + Copy> Mul<K> for Matr
         }
         self
     }
+}
+
+impl <const C: usize, const R: usize, const P: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<Matrix<P, C, K>> for Matrix<C, R, K> {
+    type Output = Matrix<P, R, K>;
+    fn mul(self, rhs: Matrix<P, C, K>) -> Self::Output { self * &rhs }
+}
+
+impl <const C: usize, const R: usize, const P: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<Matrix<P, C, K>> for &Matrix<C, R, K> {
+    type Output = Matrix<P, R, K>;
+    fn mul(self, rhs: Matrix<P, C, K>) -> Self::Output { *self * &rhs }
+}
+
+impl <const C: usize, const R: usize, const P: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<&Matrix<P, C, K>> for &Matrix<C, R, K> {
+    type Output = Matrix<P, R, K>;
+    fn mul(self, rhs: &Matrix<P, C, K>) -> Self::Output { *self * rhs }
+}
+
+impl <const C: usize, const R: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<Vector<R, K>> for Matrix<C, R, K> {
+    type Output = Vector<C, K>;
+    fn mul(self, rhs: Vector<R, K>) -> Self::Output { self * &rhs }
+}
+
+impl <const C: usize, const R: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<Vector<R, K>> for &Matrix<C, R, K> {
+    type Output = Vector<C, K>;
+    fn mul(self, rhs: Vector<R, K>) -> Self::Output { *self * &rhs }
+}
+
+impl <const C: usize, const R: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<&Vector<R, K>> for &Matrix<C, R, K> {
+    type Output = Vector<C, K>;
+    fn mul(self, rhs: &Vector<R, K>) -> Self::Output { *self * rhs }
 }
 
 impl <const C: usize, const R: usize, K: Div<Output = K> + Copy> Div<K> for Matrix<C, R, K> {

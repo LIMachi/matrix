@@ -18,10 +18,10 @@ impl <K: Copy, T: Mul<K, Output = T> + Copy> Ex00scl<K> for T {
     }
 }
 
-impl <const S: usize, K: Add<Output = K> + Copy> Add for Vector<S, K> {
+impl <const S: usize, K: Add<Output = K> + Copy> Add<&Self> for Vector<S, K> {
     type Output = Self;
 
-    fn add(mut self, rhs: Self) -> Self::Output {
+    fn add(mut self, rhs: &Self) -> Self::Output {
         for i in 0..S {
             self[i] = self[i] + rhs[i];
         }
@@ -29,10 +29,10 @@ impl <const S: usize, K: Add<Output = K> + Copy> Add for Vector<S, K> {
     }
 }
 
-impl <const S: usize, K: Sub<Output = K> + Copy> Sub for Vector<S, K> {
+impl <const S: usize, K: Sub<Output = K> + Copy> Sub<&Self> for Vector<S, K> {
     type Output = Self;
 
-    fn sub(mut self, rhs: Self) -> Self::Output {
+    fn sub(mut self, rhs: &Self) -> Self::Output {
         for i in 0..S {
             self[i] = self[i] - rhs[i];
         }
@@ -40,10 +40,10 @@ impl <const S: usize, K: Sub<Output = K> + Copy> Sub for Vector<S, K> {
     }
 }
 
-impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add for Matrix<C, R, K> {
+impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add<&Self> for Matrix<C, R, K> {
     type Output = Self;
 
-    fn add(mut self, rhs: Self) -> Self::Output {
+    fn add(mut self, rhs: &Self) -> Self::Output {
         for r in 0..R {
             for c in 0..C {
                 self[(c, r)] = self[(c, r)] + rhs[(c, r)];
@@ -53,10 +53,10 @@ impl <const C: usize, const R: usize, K: Add<Output = K> + Copy> Add for Matrix<
     }
 }
 
-impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub for Matrix<C, R, K> {
+impl <const C: usize, const R: usize, K: Sub<Output = K> + Copy> Sub<&Self> for Matrix<C, R, K> {
     type Output = Self;
 
-    fn sub(mut self, rhs: Self) -> Self::Output {
+    fn sub(mut self, rhs: &Self) -> Self::Output {
         for r in 0..R {
             for c in 0..C {
                 self[(c, r)] = self[(c, r)] - rhs[(c, r)];

@@ -6,10 +6,10 @@ use crate::vector::Vector;
 
 ///replaced mul_vec by the operator `mat * vec -> vec` and mul_mat by the operator `mat * mat -> mat`
 
-impl <const C: usize, const R: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<Vector<R, K>> for Matrix<C, R, K> {
+impl <const C: usize, const R: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<&Vector<R, K>> for Matrix<C, R, K> {
     type Output = Vector<C, K>;
 
-    fn mul(self, rhs: Vector<R, K>) -> Self::Output {
+    fn mul(self, rhs: &Vector<R, K>) -> Self::Output {
         let mut out = Vector::<C, K>::default();
         for i in 0..R {
             for n in 0..C {
@@ -20,10 +20,10 @@ impl <const C: usize, const R: usize, K: Default + Copy + Mul<Output = K> + Add<
     }
 }
 
-impl <const C: usize, const R: usize, const P: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<Matrix<P, C, K>> for Matrix<C, R, K> {
+impl <const C: usize, const R: usize, const P: usize, K: Default + Copy + Mul<Output = K> + Add<Output = K>> Mul<&Matrix<P, C, K>> for Matrix<C, R, K> {
     type Output = Matrix<P, R, K>;
 
-    fn mul(self, rhs: Matrix<P, C, K>) -> Self::Output {
+    fn mul(self, rhs: &Matrix<P, C, K>) -> Self::Output {
         let mut out = Matrix::<P, R, K>::default();
         for p in 0..P {
             for c in 0..C {

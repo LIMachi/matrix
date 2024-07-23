@@ -36,14 +36,14 @@ pub fn babylonian_sqrt(val: f32) -> f32 {
     val.sqrt()
 }
 
-pub trait Norm {
+pub trait Ex04Norm {
     fn norm_1(&self) -> f32;
     fn norm(&self) -> f32;
     fn norm_inf(&self) -> f32;
 }
 
 ///for any type that can be represented as a single real, the length/norm is always abs of self
-impl <T: Copy + Into<f32>> Norm for T where f32: From<T> {
+impl <T: Copy + Into<f32>> Ex04Norm for T where f32: From<T> {
     fn norm_1(&self) -> f32 {
         f32::from(*self).abs()
     }
@@ -57,7 +57,7 @@ impl <T: Copy + Into<f32>> Norm for T where f32: From<T> {
     }
 }
 
-impl Norm for Complex {
+impl Ex04Norm for Complex {
     fn norm_1(&self) -> f32 {
         self.r.abs() + self.i.abs()
     }
@@ -71,7 +71,7 @@ impl Norm for Complex {
     }
 }
 
-impl <const S: usize, K: Norm> Norm for Vector<S, K> {
+impl <const S: usize, K: Ex04Norm> Ex04Norm for Vector<S, K> {
     //manathan norm: addition of the length of each terms of the vector
     fn norm_1(&self) -> f32 {
         let mut acc = 0f32;
@@ -98,6 +98,12 @@ impl <const S: usize, K: Norm> Norm for Vector<S, K> {
             acc = acc.max(self[i].norm_inf());
         }
         acc
+    }
+}
+
+impl <const S: usize> Vector<S, f32> {
+    pub fn normalized(&self) -> Self {
+        *self * (1. / self.norm())
     }
 }
 

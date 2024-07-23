@@ -1,7 +1,5 @@
 use std::fmt::{Debug, Display, Formatter};
-use std::ops::{Add, Div, Index, Mul};
-use crate::exercises::ex04::babylonian_sqrt;
-use crate::utils::Unit;
+use std::ops::Index;
 use super::Vector;
 
 impl <const S: usize, K: Default + Copy> Default for Vector<S, K> {

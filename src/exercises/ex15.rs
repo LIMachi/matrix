@@ -2,10 +2,13 @@ use crate::{result, show};
 use crate::complex::Complex;
 use crate::exercises::ex01::linear_combination;
 use crate::exercises::ex02::Lerp;
-use crate::exercises::ex04::Norm;
+use crate::exercises::ex04::Ex04Norm;
 use crate::matrix::Matrix;
 use crate::utils::ex;
 use crate::vector::Vector;
+use crate::exercises::ex03::Ex03dot;
+use crate::exercises::ex05::Ex05angleCos;
+use crate::exercises::ex06::Ex06crossProduct;
 
 pub fn ex15() {
     ex(15, "Complex vector spaces");
@@ -53,7 +56,7 @@ pub fn ex15() {
     result!(v000i.angle_cos(&v000i));
     result!(v00r0.angle_cos(&v00r0));
     println!("\n-- 06 Cross product");
-    result!(Vector::from([c10, c00, c01]).cross_product(&Vector::from([c00, c00, c01])));
+    result!(Vector::from([c10, c00, c01]).cross_product(Vector::from([c00, c00, c01])));
     println!("\n-- 07 Linear map, matrix multiplication");
     let cm;
     let r0;

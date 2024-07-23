@@ -2,6 +2,7 @@ use std::fmt::{Debug, Display, Formatter};
 use crate::quaternion::Quaternion;
 use crate::utils::Unit;
 use crate::vector::Vec3;
+use crate::exercises::ex06::Ex06crossProduct;
 
 impl Quaternion {
 
@@ -49,7 +50,7 @@ impl Quaternion {
     }
 
     pub fn from_look_at(look: Vec3, up: Vec3) -> Self {
-        let right = up.cross_product(&look).normalize();
+        let right = up.cross_product(&look).normalized();
         let up = look.cross_product(&right);
         let t1 = 1. + right[0] - up[1] - look[2];
         let t2 = 1. - right[0] + up[1] - look[2];

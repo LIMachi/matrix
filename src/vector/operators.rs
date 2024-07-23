@@ -55,6 +55,21 @@ impl <const S: usize, K: Add<Output = K> + Copy> Add<K> for Vector<S, K> {
     }
 }
 
+impl <const S: usize, K: Add<Output = K> + Copy> Add for Vector<S, K> {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self::Output { self + &rhs }
+}
+
+impl <const S: usize, K: Add<Output = K> + Copy> Add for &Vector<S, K> {
+    type Output = Vector<S, K>;
+    fn add(self, rhs: Self) -> Self::Output { *self + rhs }
+}
+
+impl <const S: usize, K: Add<Output = K> + Copy> Add<Vector<S, K>> for &Vector<S, K> {
+    type Output = Vector<S, K>;
+    fn add(self, rhs: Vector<S, K>) -> Self::Output { *self + &rhs }
+}
+
 impl <const S: usize, K: Sub<Output = K> + Copy> Sub<K> for Vector<S, K> {
     type Output = Self;
 
@@ -64,6 +79,21 @@ impl <const S: usize, K: Sub<Output = K> + Copy> Sub<K> for Vector<S, K> {
         }
         self
     }
+}
+
+impl <const S: usize, K: Sub<Output = K> + Copy> Sub for Vector<S, K> {
+    type Output = Self;
+    fn sub(self, rhs: Self) -> Self::Output { self - &rhs }
+}
+
+impl <const S: usize, K: Sub<Output = K> + Copy> Sub for &Vector<S, K> {
+    type Output = Vector<S, K>;
+    fn sub(self, rhs: Self) -> Self::Output { *self - rhs }
+}
+
+impl <const S: usize, K: Sub<Output = K> + Copy> Sub<Vector<S, K>> for &Vector<S, K> {
+    type Output = Vector<S, K>;
+    fn sub(self, rhs: Vector<S, K>) -> Self::Output { *self - &rhs }
 }
 
 impl <const S: usize, K: Neg<Output=K> + Copy> Neg for Vector<S, K> {
@@ -77,15 +107,30 @@ impl <const S: usize, K: Neg<Output=K> + Copy> Neg for Vector<S, K> {
     }
 }
 
-impl <const S: usize, K: Mul<Output = K> + Copy> Mul for Vector<S, K> {
+impl <const S: usize, K: Mul<Output = K> + Copy> Mul<&Self> for Vector<S, K> {
     type Output = Self;
 
-    fn mul(mut self, rhs: Self) -> Self::Output {
+    fn mul(mut self, rhs: &Self) -> Self::Output {
         for i in 0..S {
             self[i] = self[i] * rhs[i];
         }
         self
     }
+}
+
+impl <const S: usize, K: Mul<Output = K> + Copy> Mul for Vector<S, K> {
+    type Output = Self;
+    fn mul(self, rhs: Self) -> Self::Output { self * &rhs }
+}
+
+impl <const S: usize, K: Mul<Output = K> + Copy> Mul for &Vector<S, K> {
+    type Output = Vector<S, K>;
+    fn mul(self, rhs: Self) -> Self::Output { *self * rhs }
+}
+
+impl <const S: usize, K: Mul<Output = K> + Copy> Mul<Vector<S, K>> for &Vector<S, K> {
+    type Output = Vector<S, K>;
+    fn mul(self, rhs: Vector<S, K>) -> Self::Output { *self * &rhs }
 }
 
 impl <const S: usize, K: Mul<Output = K> + Copy> Mul<K> for Vector<S, K> {
@@ -99,15 +144,30 @@ impl <const S: usize, K: Mul<Output = K> + Copy> Mul<K> for Vector<S, K> {
     }
 }
 
-impl <const S: usize, K: Div<Output = K> + Copy> Div for Vector<S, K> {
+impl <const S: usize, K: Div<Output = K> + Copy> Div<&Self> for Vector<S, K> {
     type Output = Self;
 
-    fn div(mut self, rhs: Self) -> Self::Output {
+    fn div(mut self, rhs: &Self) -> Self::Output {
         for i in 0..S {
             self[i] = self[i] / rhs[i];
         }
         self
     }
+}
+
+impl <const S: usize, K: Div<Output = K> + Copy> Div for Vector<S, K> {
+    type Output = Self;
+    fn div(self, rhs: Self) -> Self::Output { self / &rhs }
+}
+
+impl <const S: usize, K: Div<Output = K> + Copy> Div for &Vector<S, K> {
+    type Output = Vector<S, K>;
+    fn div(self, rhs: Self) -> Self::Output { *self / rhs }
+}
+
+impl <const S: usize, K: Div<Output = K> + Copy> Div<Vector<S, K>> for &Vector<S, K> {
+    type Output = Vector<S, K>;
+    fn div(self, rhs: Vector<S, K>) -> Self::Output { *self / &rhs }
 }
 
 impl <const S: usize, K: Div<Output = K> + Copy> Div<K> for Vector<S, K> {
